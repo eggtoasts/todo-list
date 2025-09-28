@@ -1,0 +1,59 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+}
+
+/* material-icons-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Material Icons";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./icons/material-icons-v145-latin-regular.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* material-icons-outlined-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: "Material Icons Outlined";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./icons/material-icons-outlined-v110-latin-regular.woff2")
+    format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+div {
+  border: 0.2px solid rgba(255, 0, 0, 0.263);
+}
+
+.icon {
+  font-family: "Material Icons", "Material Icons Outlined";
+}
+
+.sidebar-item {
+  display: flex;
+}
+.main-container {
+  height: 100%;
+
+  display: grid;
+
+  grid-template-columns: 200px 1fr;
+}
+
+.side-bar {
+  grid-column: 1 / 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.upper-sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  grid-column: 2 / 3;
+}
