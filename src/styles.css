@@ -1,10 +1,4 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  height: 100vh;
-}
-
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 /* material-icons-regular - latin */
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
@@ -24,15 +18,37 @@ body {
     format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
+:root {
+  --icon-color: #666666;
+  --main-color: rgb(46, 92, 244);
+
+  --sidebar-color: #fcfaf8;
+  --on-project-color: #ffefe5;
+  --on-hover: #f2efed;
+
+  --left-margin: 10px;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+html,
+body {
+  height: 100vh;
+  font-family: "Roboto";
+}
+
 div {
-  border: 0.2px solid rgba(255, 0, 0, 0.263);
+  /* border: 0.2px solid rgba(255, 0, 0, 0.263); */
 }
 
 .icon {
-  font-family: "Material Icons", "Material Icons Outlined";
+  font-family: "Material Icons Outlined", "Material Icons";
 }
 
-.sidebar-item {
+.sidebar-item,
+.project-item {
   display: flex;
 }
 .main-container {
@@ -40,20 +56,111 @@ div {
 
   display: grid;
 
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 275px 1fr;
 }
 
-.side-bar {
+.sidebar {
   grid-column: 1 / 1;
   display: flex;
   flex-direction: column;
+  background-color: var(--sidebar-color);
 }
 
-.upper-sidebar {
+.sidebar-upper,
+.sidebar-lower,
+.projects-container {
   display: flex;
   flex-direction: column;
+
+  gap: 2px;
+}
+
+.sidebar-options {
+  height: 50px;
+  display: flex;
+  align-items: center;
 }
 
 .main-content {
   grid-column: 2 / 3;
+}
+
+.sidebar-item,
+.project-item {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  height: 40px;
+
+  border-style: none;
+  margin-right: var(--left-margin);
+}
+
+.add-task,
+.add-task .icon {
+  color: var(--main-color);
+  font-weight: bold;
+}
+
+.sidebar-options .icon.right {
+  margin-left: auto;
+  margin-right: var(--left-margin);
+  border-style: none;
+  padding: 5px;
+}
+
+.sidebar-options .icon.left {
+  color: black;
+  margin-right: 1px;
+}
+
+.icon {
+  color: var(--icon-color);
+  font-size: 20px;
+  margin-left: 5px;
+}
+.sidebar-item p {
+  margin-left: var(--left-margin);
+}
+
+.sidebar-item:not(.add-task) {
+  color: var(--icon-color);
+}
+
+button {
+  border-radius: 5px;
+  background-color: var(--sidebar-color);
+}
+
+.sidebar-lower,
+.sidebar-upper,
+.sidebar-footer {
+  margin-left: var(--left-margin);
+}
+
+.sidebar-footer {
+  position: fixed;
+  bottom: 0;
+
+  background-color: var(--sidebar-color);
+  width: 275px;
+}
+
+button:hover {
+  background-color: var(--on-hover);
+  cursor: pointer;
+}
+
+.projects-container {
+  overflow: auto;
+}
+
+.projects-title {
+  margin-top: 20px;
+  font-weight: bold;
+  margin-bottom: var(--left-margin);
+}
+
+.sidebar-title {
+  font-size: 20px;
 }
