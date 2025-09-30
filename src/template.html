@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>to-do list</title>
-
+  </head>
+  <body>
     <div class="main-container">
       <div class="sidebar">
         <div class="sidebar-upper">
@@ -36,7 +37,12 @@
         </div>
 
         <div class="sidebar-lower">
-          <div class="projects-title">My Projects</div>
+          <div class="projects-title-wrapper">
+            <div class="projects-title">My Projects</div>
+            <button class="add-projects">
+              <div class="icon">add</div>
+            </button>
+          </div>
           <div class="projects-container">
             <button class="project-item">
               <span class="icon">tag</span>
@@ -69,9 +75,171 @@
       <div class="main-content">
         <!-- PROJECTS -->
 
+        <div class="header">
+          <!-- <button class="sort">Sort</button>
+          <button class="filter">Filter</button> -->
+        </div>
+        <div class="project-title">Project Name 🌟</div>
+
+        <div class="project-content">
+          <div class="task-container">
+            <div class="task-item">
+              <button class="checkmark"></button>
+
+              <div class="task-texts">
+                <div class="task-header">
+                  <div class="task-title">Play Persona 5 Royal</div>
+
+                  <button class="task-edit">
+                    <span class="icon">edit_note</span>
+                  </button>
+                </div>
+                <div class="task-description">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Fugiat ea ullam tenetur ducimus fuga ad sequi obcaecati saepe,
+                  natus cum dolorum soluta pariatur itaque eligendi nobis
+                  praesentium iure tempore. Voluptatem!
+                </div>
+
+                <div class="task-date">
+                  <div class="icon">date_range</div>
+                  <div class="task-date-text">Sat, Sep 27</div>
+                </div>
+              </div>
+            </div>
+            <!-- dupe tasks -->
+
+            <div class="task-item">
+              <button class="checkmark priority-color-low"></button>
+
+              <div class="task-texts">
+                <div class="task-header">
+                  <div class="task-title">Play Persona 5 Royal</div>
+
+                  <button class="task-edit">
+                    <span class="icon">edit_note</span>
+                  </button>
+                </div>
+                <div class="task-description">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Fugiat ea ullam tenetur ducimus fuga ad sequi obcaecati saepe,
+                  natus cum dolorum soluta pariatur itaque eligendi nobis
+                  praesentium iure tempore. Voluptatem!
+                </div>
+
+                <div class="task-date">
+                  <div class="icon">date_range</div>
+                  <div class="task-date-text">Sat, Sep 27</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="task-item">
+              <button class="checkmark priority-color-medium"></button>
+
+              <div class="task-texts">
+                <div class="task-header">
+                  <div class="task-title">Play Persona 5 Royal</div>
+
+                  <button class="task-edit">
+                    <span class="icon">edit_note</span>
+                  </button>
+                </div>
+                <div class="task-description">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Fugiat ea ullam tenetur ducimus fuga ad sequi obcaecati saepe,
+                  natus cum dolorum soluta pariatur itaque eligendi nobis
+                  praesentium iure tempore. Voluptatem!
+                </div>
+
+                <div class="task-date">
+                  <div class="icon">date_range</div>
+                  <div class="task-date-text">Sat, Sep 27</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="task-item">
+              <button class="checkmark priority-color-high"></button>
+
+              <div class="task-texts">
+                <div class="task-header">
+                  <div class="task-title">Play Persona 5 Royal</div>
+
+                  <button class="task-edit">
+                    <span class="icon">edit_note</span>
+                  </button>
+                </div>
+                <div class="task-description">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Fugiat ea ullam tenetur ducimus fuga ad sequi obcaecati saepe,
+                  natus cum dolorum soluta pariatur itaque eligendi nobis
+                  praesentium iure tempore. Voluptatem!
+                </div>
+
+                <div class="task-date">
+                  <div class="icon">date_range</div>
+                  <div class="task-date-text">Sat, Sep 27</div>
+                </div>
+              </div>
+            </div>
+            <!--  -->
+
+            <!-- edit tasks -->
+
+            <!-- <div class="edit">
+              <input type="text" placeholder="Enter Title" />
+
+              <textarea>(Optional)</textarea>
+
+              <div class="task-buttons">
+                <input type="date" />
+                <select>
+                  <option value="projects">projects</option>
+                  <option value="projects">projects1</option>
+                </select>
+                <button>Cancel</button>
+                <button>Submit</button>
+              </div>
+            </div> -->
+
+            <!--  -->
+          </div>
+        </div>
+
         <!-- PROJECTS -->
       </div>
     </div>
-  </head>
-  <body></body>
+
+    <dialog class="add-task-dialog">
+      <form class="dialog-content">
+        <input type="text" placeholder="Enter Title" class="add-task-title" />
+
+        <textarea
+          class="add-task-description"
+          placeholder="(Optional)"
+        ></textarea>
+
+        <div class="add-task-buttons">
+          <div class="options-wrapper">
+            <input type="date" />
+            <select>
+              <option value="projects">Projects</option>
+              <option value="projects">Projects1</option>
+            </select>
+            <select>
+              <option value="priority">None</option>
+              <option value="priority">Low</option>
+              <option value="priority">Medium</option>
+              <option value="priority">High</option>
+            </select>
+          </div>
+          <div class="button-wrapper">
+            <button class="cancel-add-task">Cancel</button>
+            <button class="submit-add-task">Submit</button>
+          </div>
+        </div>
+      </form>
+    </dialog>
+  </body>
 </html>

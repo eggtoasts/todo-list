@@ -22,11 +22,20 @@
   --icon-color: #666666;
   --main-color: rgb(46, 92, 244);
 
-  --sidebar-color: #fcfaf8;
-  --on-project-color: #ffefe5;
-  --on-hover: #f2efed;
+  --sidebar-color: #f6f6f7;
+  --on-project-color: #e5eaff;
+  --on-hover: #eae9eb;
 
-  --left-margin: 10px;
+  --orange: #ebba47;
+  --blue: #47b1eb;
+  --red: #e96161;
+  --light_orange: #f4dbbd;
+  --light_blue: #d1e1f4;
+  --light_red: #f8caca;
+
+  --left-margin: 15px;
+  --black: #202020;
+  --grey: #454545;
 }
 
 * {
@@ -37,6 +46,9 @@ html,
 body {
   height: 100vh;
   font-family: "Roboto";
+
+  /* Removes the scroll  */
+  overflow: hidden;
 }
 
 div {
@@ -76,6 +88,8 @@ div {
 }
 
 .sidebar-options {
+  padding-top: 20px;
+  padding-bottom: 20px;
   height: 50px;
   display: flex;
   align-items: center;
@@ -83,6 +97,9 @@ div {
 
 .main-content {
   grid-column: 2 / 3;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-item,
@@ -102,7 +119,15 @@ div {
   font-weight: bold;
 }
 
-.sidebar-options .icon.right {
+.add-task .icon {
+  font-size: 27px;
+
+  /* To align */
+  margin-right: -7.1px;
+}
+
+.sidebar-options .icon.right,
+.add-projects {
   margin-left: auto;
   margin-right: var(--left-margin);
   border-style: none;
@@ -110,26 +135,30 @@ div {
 }
 
 .sidebar-options .icon.left {
-  color: black;
-  margin-right: 1px;
+  color: var(--black);
+  margin-right: 2px;
 }
 
 .icon {
   color: var(--icon-color);
   font-size: 20px;
-  margin-left: 5px;
 }
-.sidebar-item p {
+.sidebar-item,
+.project-item {
+  background-color: var(--sidebar-color);
+}
+.sidebar-item p,
+.project-item div {
   margin-left: var(--left-margin);
 }
 
-.sidebar-item:not(.add-task) {
-  color: var(--icon-color);
+.sidebar-item:not(.add-task),
+.project-item {
+  color: var(--grey);
 }
 
 button {
   border-radius: 5px;
-  background-color: var(--sidebar-color);
 }
 
 .sidebar-lower,
@@ -142,17 +171,21 @@ button {
   position: fixed;
   bottom: 0;
 
-  background-color: var(--sidebar-color);
   width: 275px;
-}
-
-button:hover {
-  background-color: var(--on-hover);
-  cursor: pointer;
+  padding-bottom: 20px;
 }
 
 .projects-container {
   overflow: auto;
+}
+
+.projects-container .icon {
+  margin-left: 5px;
+}
+
+.projects-title-wrapper {
+  display: flex;
+  align-items: center;
 }
 
 .projects-title {
@@ -161,6 +194,231 @@ button:hover {
   margin-bottom: var(--left-margin);
 }
 
-.sidebar-title {
-  font-size: 20px;
+.sidebar-title,
+.sidebar-options .icon.left {
+  font-size: 30px;
+  font-weight: bold;
+  color: var(--black);
+}
+
+/* PROJECTS */
+
+.header {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  height: 50px;
+  display: flex;
+
+  align-items: center;
+}
+
+.header button {
+  padding: 5px;
+
+  border-radius: 50px;
+}
+
+.project-content,
+.project-title {
+  align-self: center;
+  width: 67%;
+  margin: 0px 67px;
+
+  /* border: 0.2px solid blue; */
+}
+
+.project-content {
+  margin-top: 10px;
+  /* border: 2px solid red; */
+}
+
+.project-title {
+  font-size: 24px;
+  font-weight: bold;
+
+  padding: 15px 0px;
+  /* margin-top: 25px; */
+}
+
+/* TASKS */
+.task-item {
+  display: flex;
+
+  border-bottom: 1.3px solid #a5a5a585;
+
+  margin-bottom: 20px;
+  padding-top: 0px;
+}
+
+.task-item div {
+  margin-bottom: 5px;
+}
+
+.task-header {
+  display: flex;
+}
+
+.task-header > .task-edit {
+  margin-left: auto;
+  margin-right: 20px;
+  border: none;
+  height: 30px;
+  width: 30px;
+
+  background-color: white;
+}
+
+.task-title {
+  font-size: 16px;
+}
+.task-description {
+  font-size: 12px;
+  color: grey;
+  padding-bottom: 15px;
+}
+.task-texts {
+  margin-left: var(--left-margin);
+}
+
+.task-date {
+  display: flex;
+  align-items: center;
+}
+
+.task-date .icon {
+  margin-right: 5px;
+}
+
+.task-date-text,
+.task-date .icon {
+  font-size: 12px;
+}
+
+.checkmark {
+  height: 20px;
+  min-width: 20px;
+  border-radius: 100px;
+
+  border: 1.3px solid grey;
+}
+
+/* DIALOG */
+
+dialog::backdrop {
+}
+
+dialog > * {
+  border: 1.5px solid var(--icon-color);
+}
+dialog {
+  position: absolute;
+
+  height: 100%;
+  width: 100%;
+
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: center;
+}
+
+.dialog-content {
+  position: relative;
+  top: -10%;
+  width: 500px;
+  height: 200px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  border-radius: 25px;
+
+  background-color: white;
+}
+
+.add-task-buttons {
+  display: flex;
+}
+
+.add-task-title,
+.add-task-description {
+  padding: 5px 10px;
+  border-style: none;
+}
+.add-task-title {
+  height: 30px;
+  font-size: 19px;
+
+  flex-shrink: 0;
+  margin-bottom: 2px;
+}
+
+.add-task-description {
+  height: 100%;
+  resize: none;
+}
+
+.button-wrapper {
+  margin-left: auto;
+}
+
+.options-wrapper > * {
+  margin-right: 5px;
+  border-radius: 10px;
+  border: 0.2px solid grey;
+  padding: 5px 5px;
+}
+
+.button-wrapper,
+.options-wrapper {
+  display: flex;
+
+  width: min-content;
+  margin-top: var(--left-margin);
+}
+
+.button-wrapper > button {
+  padding: 10px;
+  font-weight: bold;
+  margin-left: 5px;
+  border-style: none;
+}
+.submit-add-task {
+  background-color: var(--main-color);
+  color: white;
+}
+
+.cancel-add-task {
+  background-color: #e4e4e4;
+}
+
+/* hover */
+.sidebar button:hover {
+  background-color: var(--on-hover);
+  cursor: pointer;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+/* priority colors */
+
+.priority-color-low {
+  border: 2px solid var(--blue);
+  background-color: var(--light_blue);
+}
+
+.priority-color-medium {
+  border: 2px solid var(--orange);
+  background-color: var(--light_orange);
+}
+
+.priority-color-high {
+  border: 2px solid var(--red);
+  background-color: var(--light_red);
 }
