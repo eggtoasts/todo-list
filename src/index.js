@@ -20,7 +20,7 @@ class Project {
     this.name = name;
     this.color = color;
     this.todosArray = [];
-    this.id = id;
+    this.id = crypto.randomUUID();
   }
 
   get getTodosSize() {}
@@ -112,34 +112,45 @@ const task2 = new Todos(
   "priority-color-medium",
   0
 );
+
+const task3 = new Todos(
+  "This should be first.",
+  "olorum soluta pariatur itaque eligendi nobis praesentium iure tempore. Voluptatem!",
+  "11/11/11",
+  "priority-color-high",
+  0
+);
 const defaultProject = new Project("Default Project", "Blue", [], 1);
 const secondProject = new Project("Second Project", "Blue", [], 2);
 Proj.addProject(defaultProject);
 Proj.addProject(secondProject);
 defaultProject.addTodo(task);
 defaultProject.addTodo(task2);
+defaultProject.addTodo(task3);
+secondProject.addTodo(task3);
 
 console.log(defaultProject.getTodosArray);
 
 console.log(Proj.getProjectsArray());
 
-const pageHandler = function (currentSelectedProject) {
-  function clearPageContents() {}
+let pageUIHandler = function () {
+  const projectTitle = document.querySelector(".project-title");
+  const taskUI = taskUIHandler();
 
-  function addPageContents() {}
+  function renderPage(currentProject) {
+    taskUI.updateTasksUI(currentProject);
 
-  function renderPage(currentSelectedProject) {}
-};
+    projectTitle.textContent = currentProject.getName;
+    console.log(currentProject);
+  }
 
-const main = function () {
-  const currentSelectedProject = defaultProject;
-
-  //renderPage(currentSelectedProject);
-  UserInterface();
+  return { renderPage };
 };
 
 const projectUIHandler = function () {
+  let pageUI = pageUIHandler();
   const projectContainer = document.querySelector(".projects-container");
+
   function clearProjectUI(projectContainer) {
     let projectChild = projectContainer.lastElementChild;
 
@@ -149,11 +160,24 @@ const projectUIHandler = function () {
     }
   }
 
+  const addProjectEvent = function (projectItem) {
+    projectItem.addEventListener("click", (e) => {
+      //when we click on a project tab,
+      //we render its page.
+
+      const projectId = projectItem["id"];
+      const currentProject = Proj.getProjectsArray().find(
+        (e) => e.id === projectId
+      );
+
+      pageUI.renderPage(currentProject);
+    });
+  };
+
   let addProjectItem = function (currProject) {
     projectContainer.appendChild(currProject);
   };
 
-  //vv for this we should push it back to array
   let createProjectItem = function (project) {
     //project has name, color, id
     const name = project.getName;
@@ -169,6 +193,7 @@ const projectUIHandler = function () {
     tag.setAttribute("class", "icon");
     projectTitle.setAttribute("class", "title");
     editOption.setAttribute("class", "right-option");
+    projectItem.setAttribute("id", id);
 
     tag.textContent = "tag";
     projectTitle.textContent = name;
@@ -177,6 +202,9 @@ const projectUIHandler = function () {
     projectItem.appendChild(tag);
     projectItem.appendChild(projectTitle);
     projectItem.appendChild(editOption);
+
+    //Add event
+    addProjectEvent(projectItem);
 
     return projectItem;
   };
@@ -197,7 +225,10 @@ const projectUIHandler = function () {
     });
   };
 
-  return { updateProjectsUI };
+  //Destructures renderPage from pageUI
+  const { renderPage } = pageUI;
+
+  return { updateProjectsUI, renderPage };
 };
 
 const taskUIHandler = function () {
@@ -298,20 +329,10 @@ const taskUIHandler = function () {
   return { updateTasksUI };
 };
 
-const UserInterface = function () {
+const UserInterface = function (currentSelectedProject) {
   //Selecting project container
   const projectUI = projectUIHandler();
-  const taskUI = taskUIHandler();
-
-  function setProjectTexts() {}
-
-  function createTaskItem() {
-    //task item has:
-    //checkmark (prioity)
-    //task header (title, icon)
-    //task-description
-    //task date
-  }
+  const { renderPage } = projectUI;
 
   //button
   const addTaskButton = document.querySelector(".add-task");
@@ -322,10 +343,20 @@ const UserInterface = function () {
   });
 
   //Updates UI of Project & Tasks
-  projectUI.updateProjectsUI(Proj);
-  taskUI.updateTasksUI(defaultProject);
+  const updateProjectUI = () => projectUI.updateProjectsUI(Proj);
+  projectUI.renderPage(currentSelectedProject);
 
-  return {};
+  console.log("current is " + currentSelectedProject);
+
+  return { updateProjectUI, renderPage };
+};
+
+const main = function () {
+  const currentSelectedProject = defaultProject;
+
+  const mainUI = UserInterface(currentSelectedProject);
+
+  mainUI.updateProjectUI();
 };
 
 main();
