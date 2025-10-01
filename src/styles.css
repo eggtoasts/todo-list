@@ -51,9 +51,9 @@ body {
   overflow: hidden;
 }
 
-div {
-  /* border: 0.2px solid rgba(255, 0, 0, 0.263); */
-}
+/* div {
+  border: 0.2px solid rgba(255, 0, 0, 0.263);
+} */
 
 .icon {
   font-family: "Material Icons Outlined", "Material Icons";
@@ -254,10 +254,12 @@ button {
 
 .task-item div {
   margin-bottom: 5px;
+  width: 100%;
 }
 
 .task-header {
   display: flex;
+  align-items: center;
 }
 
 .task-header > .task-edit {
@@ -294,6 +296,11 @@ button {
 .task-date-text,
 .task-date .icon {
   font-size: 12px;
+  flex: 0;
+}
+
+.task-date-text {
+  min-width: 200px;
 }
 
 .checkmark {

@@ -25,6 +25,10 @@ class Project {
 
   get getTodosSize() {}
 
+  get getTodosArray() {
+    return this.todosArray;
+  }
+
   addTodo(todo) {
     this.todosArray.push(todo);
   }
@@ -51,11 +55,19 @@ class Todos {
     this.checked = 0;
   }
 
-  get getTitle() {}
+  get getTitle() {
+    return this.title;
+  }
 
   set setTitle(title) {}
 
-  get getDate() {}
+  get getDate() {
+    return this.date;
+  }
+
+  get getDescription() {
+    return this.description;
+  }
 
   set getDate(date) {}
 
@@ -85,16 +97,46 @@ function deleteTodo(todosArray) {
 //DOM stuff
 
 const Proj = Projects();
-const task = new Todos("w", "w", "11/11/11", "None", 0);
+const task = new Todos(
+  "Play Persona 5 Royal",
+  "olorum soluta pariatur itaque eligendi nobis praesentium iure tempore. Voluptatem!",
+  "11/11/11",
+  "None",
+  0
+);
+
+const task2 = new Todos(
+  "This should be second.",
+  "olorum soluta pariatur itaque eligendi nobis praesentium iure tempore. Voluptatem!",
+  "11/11/11",
+  "None",
+  0
+);
 const defaultProject = new Project("Default Project", "Blue", [], 1);
-const secondProject = new Project("second Project", "Blue", [], 1);
+const secondProject = new Project("Second Project", "Blue", [], 2);
 Proj.addProject(defaultProject);
 Proj.addProject(secondProject);
 defaultProject.addTodo(task);
+defaultProject.addTodo(task2);
 
 console.log(defaultProject.getTodosArray);
 
 console.log(Proj.getProjectsArray());
+
+const pageHandler = function (currentSelectedProject) {
+  function clearPageContents() {}
+
+  function addPageContents() {}
+
+  function renderPage(currentSelectedProject) {}
+};
+
+const main = function () {
+  const currentSelectedProject = defaultProject;
+
+  //renderPage(currentSelectedProject);
+  UserInterface();
+};
 
 const projectUIHandler = function () {
   const projectContainer = document.querySelector(".projects-container");
@@ -107,14 +149,8 @@ const projectUIHandler = function () {
     }
   }
 
-  let addProjectItem = function (projectElements) {
-    const projectItems = document.querySelectorAll(".project-item");
-    const projectItem = projectItems[projectItems.length - 1];
-
-    for (let elements of projectElements) {
-      console.log(elements);
-      projectItem.appendChild(elements);
-    }
+  let addProjectItem = function (currProject) {
+    projectContainer.appendChild(currProject);
   };
 
   //vv for this we should push it back to array
@@ -138,8 +174,11 @@ const projectUIHandler = function () {
     projectTitle.textContent = name;
 
     projectContainer.appendChild(projectItem);
+    projectItem.appendChild(tag);
+    projectItem.appendChild(projectTitle);
+    projectItem.appendChild(editOption);
 
-    return [tag, projectTitle, editOption];
+    return projectItem;
   };
 
   let updateProjectsUI = function (projects) {
@@ -151,10 +190,10 @@ const projectUIHandler = function () {
       console.log("Created a Project item ");
 
       //Creates project item element
-      const projectElements = createProjectItem(projectItem);
+      const currProject = createProjectItem(projectItem);
 
       //Add project item into our DOM
-      addProjectItem(projectElements);
+      addProjectItem(currProject);
     });
   };
 
@@ -173,9 +212,84 @@ const taskUIHandler = function () {
     }
   }
 
-  function updateTasksUI(taskContainer, project) {
+  function createTask(project) {
+    const title = project.title;
+    const description = project.description;
+    const dueDate = project.dueDate;
+    const priority = project.priority;
+    const checked = project.checked;
+
+    const taskItem = document.createElement("div");
+    const taskTexts = document.createElement("div");
+    const checkmark = document.createElement("button");
+    const taskHeader = document.createElement("div");
+    const taskTitle = document.createElement("div");
+
+    const taskEdit = document.createElement("button");
+    const editIcon = document.createElement("span");
+
+    const taskDescription = document.createElement("div");
+
+    const taskDate = document.createElement("div");
+    const calendarIcon = document.createElement("div");
+    const dateText = document.createElement("div");
+
+    //Assign all classes
+
+    taskItem.setAttribute("class", "task-item");
+    taskTexts.setAttribute("class", "task-texts");
+    checkmark.setAttribute("class", "checkmark");
+    taskHeader.setAttribute("class", "task-header");
+    taskTitle.setAttribute("class", "task-title");
+    taskEdit.setAttribute("class", "task-edit");
+    editIcon.setAttribute("class", "icon");
+    taskDescription.setAttribute("class", "task-description");
+    taskDate.setAttribute("class", "task-date");
+    calendarIcon.setAttribute("class", "icon");
+    dateText.setAttribute("class", "task-date-text");
+
+    //Set all text to is corresponding elements
+
+    taskTitle.textContent = title;
+    editIcon.textContent = "edit_note";
+    taskDescription.textContent = description;
+    calendarIcon.textContent = "date_range";
+    dateText.textContent = "Random Date for now";
+
+    //Append it to its respective div parents
+    taskContainer.appendChild(taskItem);
+
+    taskItem.appendChild(checkmark);
+
+    const taskTextsSelector = taskItem.appendChild(taskTexts);
+
+    const taskHeaderSelector = taskTextsSelector.appendChild(taskHeader);
+
+    taskHeaderSelector.appendChild(taskTitle);
+    const taskEditSelector = taskHeaderSelector.appendChild(taskEdit);
+
+    taskEditSelector.appendChild(editIcon);
+
+    taskTextsSelector.appendChild(taskDescription);
+
+    const taskContainerSelector = taskTextsSelector.appendChild(taskDate);
+
+    taskContainerSelector.appendChild(calendarIcon);
+    taskContainerSelector.appendChild(dateText);
+  }
+
+  function createAllTasks(project) {
+    console.log(project);
+    const todosArray = project.getTodosArray;
+
+    todosArray.forEach((todo) => {
+      createTask(todo);
+    });
+  }
+
+  function updateTasksUI(project) {
     clearTaskUI();
-    // const todosArray = project.getTodosArray;
+    createAllTasks(project);
   }
 
   return { updateTasksUI };
@@ -206,9 +320,9 @@ const UserInterface = function () {
 
   //Updates UI of Project & Tasks
   projectUI.updateProjectsUI(Proj);
-  taskUI.updateTasksUI(defaultProject);
+  // taskUI.updateTasksUI(defaultProject);
 
   return {};
 };
 
-UserInterface();
+main();
