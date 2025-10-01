@@ -101,7 +101,7 @@ const task = new Todos(
   "Play Persona 5 Royal",
   "olorum soluta pariatur itaque eligendi nobis praesentium iure tempore. Voluptatem!",
   "11/11/11",
-  "None",
+  "priority-color-low",
   0
 );
 
@@ -109,7 +109,7 @@ const task2 = new Todos(
   "This should be second.",
   "olorum soluta pariatur itaque eligendi nobis praesentium iure tempore. Voluptatem!",
   "11/11/11",
-  "None",
+  "priority-color-medium",
   0
 );
 const defaultProject = new Project("Default Project", "Blue", [], 1);
@@ -234,11 +234,14 @@ const taskUIHandler = function () {
     const calendarIcon = document.createElement("div");
     const dateText = document.createElement("div");
 
+    //priority
+    console.log(priority);
+
     //Assign all classes
 
     taskItem.setAttribute("class", "task-item");
     taskTexts.setAttribute("class", "task-texts");
-    checkmark.setAttribute("class", "checkmark");
+    checkmark.setAttribute("class", `checkmark ${priority}`);
     taskHeader.setAttribute("class", "task-header");
     taskTitle.setAttribute("class", "task-title");
     taskEdit.setAttribute("class", "task-edit");
@@ -320,7 +323,7 @@ const UserInterface = function () {
 
   //Updates UI of Project & Tasks
   projectUI.updateProjectsUI(Proj);
-  // taskUI.updateTasksUI(defaultProject);
+  taskUI.updateTasksUI(defaultProject);
 
   return {};
 };
