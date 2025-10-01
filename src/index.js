@@ -87,7 +87,9 @@ function deleteTodo(todosArray) {
 const Proj = Projects();
 const task = new Todos("w", "w", "11/11/11", "None", 0);
 const defaultProject = new Project("Default Project", "Blue", [], 1);
+const secondProject = new Project("second Project", "Blue", [], 1);
 Proj.addProject(defaultProject);
+Proj.addProject(secondProject);
 defaultProject.addTodo(task);
 
 console.log(defaultProject.getTodosArray);
@@ -106,8 +108,8 @@ const projectUIHandler = function () {
   }
 
   let addProjectItem = function (projectElements) {
-    const projectItem = document.querySelector(".project-item");
-    console.log(projectItem);
+    const projectItems = document.querySelectorAll(".project-item");
+    const projectItem = projectItems[projectItems.length - 1];
 
     for (let elements of projectElements) {
       console.log(elements);
@@ -118,7 +120,6 @@ const projectUIHandler = function () {
   //vv for this we should push it back to array
   let createProjectItem = function (project) {
     //project has name, color, id
-    const projectContainer = document.querySelector(".projects-container");
     const name = project.getName;
     const color = project.getTitle;
     const id = project.getId;
@@ -138,8 +139,6 @@ const projectUIHandler = function () {
 
     projectContainer.appendChild(projectItem);
 
-    console.log("editOption" + editOption);
-
     return [tag, projectTitle, editOption];
   };
 
@@ -151,7 +150,10 @@ const projectUIHandler = function () {
     projectsArray.forEach((projectItem) => {
       console.log("Created a Project item ");
 
+      //Creates project item element
       const projectElements = createProjectItem(projectItem);
+
+      //Add project item into our DOM
       addProjectItem(projectElements);
     });
   };
