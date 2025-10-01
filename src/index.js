@@ -4,14 +4,14 @@ function Projects() {
   let projectsArray = [];
 
   let getProjectsArray = function () {
-    projectsArray;
+    return projectsArray;
   };
 
   let addProject = function (project_obj) {
     projectsArray.push(project_obj);
   };
 
-  return { getProjectsArray, addProject };
+  return { projectsArray, getProjectsArray, addProject };
 }
 
 class Project {
@@ -27,6 +27,18 @@ class Project {
 
   addTodo(todo) {
     this.todosArray.push(todo);
+  }
+
+  get getName() {
+    return this.name;
+  }
+
+  get getColor() {
+    return this.color;
+  }
+
+  get getId() {
+    return this.id;
   }
 }
 
@@ -72,13 +84,15 @@ function deleteTodo(todosArray) {
 
 //DOM stuff
 
-const Proj = Projects("Project 1", "Red", 1);
-const task = new Todos("w", "w", "11-11-11", "None", 0);
-const randomProject = new Project("Random_Task", "Blue", [], 1);
-Proj.addProject(randomProject);
-randomProject.addTodo(task);
+const Proj = Projects();
+const task = new Todos("w", "w", "11/11/11", "None", 0);
+const defaultProject = new Project("Default Project", "Blue", [], 1);
+Proj.addProject(defaultProject);
+defaultProject.addTodo(task);
 
-console.log(randomProject.todosArray);
+console.log(defaultProject.getTodosArray);
+
+console.log(Proj.getProjectsArray());
 
 function clearProjectUI(projectContainer) {
   let projectChild = projectContainer.lastElementChild;
@@ -98,20 +112,74 @@ function clearTaskUI(taskContainer) {
   }
 }
 
-function updateProjectsUI(projectContainer, projectsArrau) {
+function updateProjectsUI(projectContainer, projects) {
   clearProjectUI(projectContainer);
-}
 
-function updateTasksUI(taskContainer, todosArray) {
-  clearTaskUI(taskContainer);
-  todosArray.forEach((e) => {
-    //make a div object
-    //then add it into the task container
-    //createProjectItem();
+  //We go through every project in the Projects array.
+  const projectsArray = projects.getProjectsArray();
+  projectsArray.forEach((projectItem) => {
+    console.log("Created a Project item ");
+
+    const projectElements = createProjectItem(projectItem);
+    addProjectItem(projectElements);
   });
 }
 
-function createProjectItem() {}
+function updateTasksUI(taskContainer, project) {
+  clearTaskUI(taskContainer);
+  const todosArray = project.getTodosArray;
+}
+
+let addProjectItem = function (projectElements) {
+  const projectItem = document.querySelector(".project-item");
+  console.log(projectItem);
+
+  for (let elements of projectElements) {
+    console.log(elements);
+    projectItem.appendChild(elements);
+  }
+};
+
+//vv for this we should push it back to array
+let createProjectItem = function (project) {
+  //project has name, color, id
+  const projectContainer = document.querySelector(".projects-container");
+  const name = project.getName;
+  const color = project.getTitle;
+  const id = project.getId;
+
+  const projectItem = document.createElement("button");
+  const tag = document.createElement("span");
+  const projectTitle = document.createElement("div");
+  const editOption = document.createElement("div");
+
+  projectItem.setAttribute("class", "project-item");
+  tag.setAttribute("class", "icon");
+  projectTitle.setAttribute("class", "title");
+  editOption.setAttribute("class", "right-option");
+
+  tag.textContent = "tag";
+  projectTitle.textContent = name;
+
+  projectContainer.appendChild(projectItem);
+
+  console.log("editOption" + editOption);
+
+  return [tag, projectTitle, editOption];
+};
+
+function setProjectTexts() {}
+
+function createTaskItem() {
+  //task item has:
+  //checkmark (prioity)
+  //task header (title, icon)
+  //task-description
+  //task date
+}
+
+//to create the project Item
+function readAddTaskInput() {}
 
 const UserInterface = function () {
   //Selecting project container
@@ -124,13 +192,12 @@ const UserInterface = function () {
   const addTaskDialog = document.querySelector("dialog");
 
   addTaskButton.addEventListener("click", (e) => {
-    console.log("Bruh");
     addTaskDialog.showModal();
   });
 
   //Updates UI of Project & Tasks (commented out for now)
-  // updateProjectsUI(projectContainer);
-  // updateTasksUI(taskContainer);
+  updateProjectsUI(projectContainer, Proj);
+  updateTasksUI(taskContainer, defaultProject);
 
   return {};
 };

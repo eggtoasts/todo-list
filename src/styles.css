@@ -69,6 +69,8 @@ div {
   display: grid;
 
   grid-template-columns: 275px 1fr;
+
+  overflow: auto;
 }
 
 .sidebar {
@@ -421,4 +423,14 @@ button:focus {
 .priority-color-high {
   border: 2px solid var(--red);
   background-color: var(--light_red);
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .main-container {
+    grid-template-columns: 1fr;
+  }
 }
