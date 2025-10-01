@@ -94,98 +94,105 @@ console.log(defaultProject.getTodosArray);
 
 console.log(Proj.getProjectsArray());
 
-function clearProjectUI(projectContainer) {
-  let projectChild = projectContainer.lastElementChild;
-
-  while (projectChild != null) {
-    projectContainer.removeChild(projectChild);
-    projectChild = projectContainer.lastElementChild;
-  }
-}
-
-function clearTaskUI(taskContainer) {
-  let taskChild = taskContainer.lastElementChild;
-
-  while (taskChild != null) {
-    taskContainer.removeChild(taskChild);
-    taskChild = taskContainer.lastElementChild;
-  }
-}
-
-function updateProjectsUI(projectContainer, projects) {
-  clearProjectUI(projectContainer);
-
-  //We go through every project in the Projects array.
-  const projectsArray = projects.getProjectsArray();
-  projectsArray.forEach((projectItem) => {
-    console.log("Created a Project item ");
-
-    const projectElements = createProjectItem(projectItem);
-    addProjectItem(projectElements);
-  });
-}
-
-function updateTasksUI(taskContainer, project) {
-  clearTaskUI(taskContainer);
-  const todosArray = project.getTodosArray;
-}
-
-let addProjectItem = function (projectElements) {
-  const projectItem = document.querySelector(".project-item");
-  console.log(projectItem);
-
-  for (let elements of projectElements) {
-    console.log(elements);
-    projectItem.appendChild(elements);
-  }
-};
-
-//vv for this we should push it back to array
-let createProjectItem = function (project) {
-  //project has name, color, id
+const projectUIHandler = function () {
   const projectContainer = document.querySelector(".projects-container");
-  const name = project.getName;
-  const color = project.getTitle;
-  const id = project.getId;
+  function clearProjectUI(projectContainer) {
+    let projectChild = projectContainer.lastElementChild;
 
-  const projectItem = document.createElement("button");
-  const tag = document.createElement("span");
-  const projectTitle = document.createElement("div");
-  const editOption = document.createElement("div");
+    while (projectChild != null) {
+      projectContainer.removeChild(projectChild);
+      projectChild = projectContainer.lastElementChild;
+    }
+  }
 
-  projectItem.setAttribute("class", "project-item");
-  tag.setAttribute("class", "icon");
-  projectTitle.setAttribute("class", "title");
-  editOption.setAttribute("class", "right-option");
+  let addProjectItem = function (projectElements) {
+    const projectItem = document.querySelector(".project-item");
+    console.log(projectItem);
 
-  tag.textContent = "tag";
-  projectTitle.textContent = name;
+    for (let elements of projectElements) {
+      console.log(elements);
+      projectItem.appendChild(elements);
+    }
+  };
 
-  projectContainer.appendChild(projectItem);
+  //vv for this we should push it back to array
+  let createProjectItem = function (project) {
+    //project has name, color, id
+    const projectContainer = document.querySelector(".projects-container");
+    const name = project.getName;
+    const color = project.getTitle;
+    const id = project.getId;
 
-  console.log("editOption" + editOption);
+    const projectItem = document.createElement("button");
+    const tag = document.createElement("span");
+    const projectTitle = document.createElement("div");
+    const editOption = document.createElement("div");
 
-  return [tag, projectTitle, editOption];
+    projectItem.setAttribute("class", "project-item");
+    tag.setAttribute("class", "icon");
+    projectTitle.setAttribute("class", "title");
+    editOption.setAttribute("class", "right-option");
+
+    tag.textContent = "tag";
+    projectTitle.textContent = name;
+
+    projectContainer.appendChild(projectItem);
+
+    console.log("editOption" + editOption);
+
+    return [tag, projectTitle, editOption];
+  };
+
+  let updateProjectsUI = function (projects) {
+    clearProjectUI(projectContainer);
+
+    //We go through every project in the Projects array.
+    const projectsArray = projects.getProjectsArray();
+    projectsArray.forEach((projectItem) => {
+      console.log("Created a Project item ");
+
+      const projectElements = createProjectItem(projectItem);
+      addProjectItem(projectElements);
+    });
+  };
+
+  return { updateProjectsUI };
 };
 
-function setProjectTexts() {}
+const taskUIHandler = function () {
+  const taskContainer = document.querySelector(".task-container");
 
-function createTaskItem() {
-  //task item has:
-  //checkmark (prioity)
-  //task header (title, icon)
-  //task-description
-  //task date
-}
+  function clearTaskUI() {
+    let taskChild = taskContainer.lastElementChild;
 
-//to create the project Item
-function readAddTaskInput() {}
+    while (taskChild != null) {
+      taskContainer.removeChild(taskChild);
+      taskChild = taskContainer.lastElementChild;
+    }
+  }
+
+  function updateTasksUI(taskContainer, project) {
+    clearTaskUI();
+    // const todosArray = project.getTodosArray;
+  }
+
+  return { updateTasksUI };
+};
 
 const UserInterface = function () {
   //Selecting project container
-  const projectContainer = document.querySelector(".projects-container");
-  const taskContainer = document.querySelector(".task-container");
-  console.log(taskContainer);
+  const projectUI = projectUIHandler();
+  const taskUI = taskUIHandler();
+
+  function setProjectTexts() {}
+
+  function createTaskItem() {
+    //task item has:
+    //checkmark (prioity)
+    //task header (title, icon)
+    //task-description
+    //task date
+  }
 
   //button
   const addTaskButton = document.querySelector(".add-task");
@@ -195,9 +202,9 @@ const UserInterface = function () {
     addTaskDialog.showModal();
   });
 
-  //Updates UI of Project & Tasks (commented out for now)
-  updateProjectsUI(projectContainer, Proj);
-  updateTasksUI(taskContainer, defaultProject);
+  //Updates UI of Project & Tasks
+  projectUI.updateProjectsUI(Proj);
+  taskUI.updateTasksUI(defaultProject);
 
   return {};
 };
