@@ -319,7 +319,7 @@ dialog::backdrop {
 dialog > * {
   border: 1.5px solid var(--icon-color);
 }
-dialog {
+dialog[open] {
   position: absolute;
 
   height: 100%;
@@ -331,7 +331,7 @@ dialog {
   justify-content: center;
 }
 
-.dialog-content {
+.add-task-dialog-content {
   position: relative;
   top: -10%;
   width: 500px;
