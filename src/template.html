@@ -213,25 +213,30 @@
 
     <dialog class="add-task-dialog">
       <form class="add-task-dialog-content">
-        <input type="text" placeholder="Enter Title" class="add-task-title" />
+        <input
+          type="text"
+          placeholder="Enter Title*"
+          id="add-task-dialog-title"
+          required
+        />
 
         <textarea
-          class="add-task-description"
+          id="add-task-dialog-description"
           placeholder="(Optional)"
         ></textarea>
 
         <div class="add-task-buttons">
           <div class="options-wrapper">
-            <input type="date" />
+            <input type="date" id="add-task-dialog-date" />
             <select id="add-task-dialog-projects">
               <option value="projects">Projects</option>
               <option value="projects">Projects1</option>
             </select>
             <select id="add-task-dialog-priority">
-              <option value="priority">None</option>
-              <option value="priority">Low</option>
-              <option value="priority">Medium</option>
-              <option value="priority">High</option>
+              <option value="none">None</option>
+              <option value="priority-color-low">Low</option>
+              <option value="priority-color-medium">Medium</option>
+              <option value="priority-color-high">High</option>
             </select>
           </div>
           <div class="button-wrapper">

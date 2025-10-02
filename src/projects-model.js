@@ -9,7 +9,13 @@ export function Projects() {
     projectsArray.push(project_obj);
   };
 
-  return { projectsArray, getProjectsArray, addProject };
+  let findProjectById = function (projectId) {
+    const currentProject = getProjectsArray().find((e) => e.id === projectId);
+
+    return currentProject;
+  };
+
+  return { projectsArray, getProjectsArray, addProject, findProjectById };
 }
 
 export const Proj = Projects();

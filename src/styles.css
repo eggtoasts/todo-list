@@ -350,12 +350,12 @@ dialog[open] {
   display: flex;
 }
 
-.add-task-title,
-.add-task-description {
+#add-task-dialog-title,
+#add-task-dialog-description {
   padding: 5px 10px;
   border-style: none;
 }
-.add-task-title {
+#add-task-dialog-title {
   height: 30px;
   font-size: 19px;
 
@@ -363,7 +363,7 @@ dialog[open] {
   margin-bottom: 2px;
 }
 
-.add-task-description {
+#add-task-dialog-description {
   height: 100%;
   resize: none;
 }

@@ -34,9 +34,7 @@ export const projectUIHandler = function () {
       //we render its page.
 
       const projectId = projectItem["id"];
-      const currentProject = Proj.getProjectsArray().find(
-        (e) => e.id === projectId
-      );
+      const currentProject = Proj.findProjectById(projectId);
 
       pageUI.renderPage(currentProject);
     });
@@ -197,14 +195,55 @@ export const taskUIHandler = function () {
   return { updateTasksUI };
 };
 
+export const dialogUIHandler = function () {
+  let pageUI = pageUIHandler();
+  //Selecting project container
+  const projectDropdown = document.getElementById("add-task-dialog-projects");
+
+  function clearUI(container) {
+    let taskChild = container.lastElementChild;
+
+    while (taskChild != null) {
+      container.removeChild(taskChild);
+      taskChild = container.lastElementChild;
+    }
+  }
+
+  function createProjectOption(project) {
+    const projectOption = document.createElement("option");
+    projectOption.setAttribute("value", project.getId);
+
+    return projectOption;
+  }
+
+  function createAllDialogs(allProjects) {
+    console.log(allProjects.getProjectsArray());
+    allProjects.getProjectsArray().forEach((proj) => {
+      const projectOption = createProjectOption(proj);
+      projectOption.textContent = proj.getName;
+      projectDropdown.appendChild(projectOption);
+    });
+  }
+
+  function updateDialogUI(allProjects) {
+    clearUI(projectDropdown);
+    createAllDialogs(allProjects);
+  }
+
+  return { updateDialogUI };
+};
+
 export const UserInterface = function (currentSelectedProject) {
   //Selecting project container
   const projectUI = projectUIHandler();
+  const dialogUI = dialogUIHandler();
   const { renderPage } = projectUI;
 
   //Updates UI of Project & Tasks
   const updateProjectUI = () => projectUI.updateProjectsUI(Proj);
+
   projectUI.renderPage(currentSelectedProject);
+  dialogUI.updateDialogUI(Proj);
 
   return { updateProjectUI, renderPage };
 };
