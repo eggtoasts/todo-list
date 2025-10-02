@@ -7,6 +7,7 @@ export class Todos {
     this.dueDate = this.dueDateParser(dueDate);
     this.priority = priority;
     this.checked = 0;
+    this.id = crypto.randomUUID();
   }
 
   dueDateParser(calendarText) {
@@ -27,6 +28,10 @@ export class Todos {
   }
 
   set setTitle(title) {}
+
+  get getId() {
+    return this.id;
+  }
 
   get getDate() {
     return this.date;

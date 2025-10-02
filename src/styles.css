@@ -22,7 +22,7 @@
   --icon-color: #666666;
   --main-color: rgb(46, 92, 244);
 
-  --sidebar-color: #f6f6f7;
+  --sidebar-color: #f9f9f9;
   --on-project-color: #e5eaff;
   --on-hover: #eae9eb;
 
@@ -146,12 +146,22 @@ body {
   font-size: 20px;
 }
 .sidebar-item,
-.project-item {
+.project-item,
+.project-item input {
   background-color: var(--sidebar-color);
 }
 .sidebar-item p,
-.project-item div {
+.project-item div,
+.project-item input {
   margin-left: var(--left-margin);
+}
+
+.project-item input {
+  padding: 5px 0px;
+  font-size: 15px;
+  width: 176px;
+  border-style: none;
+  color: var(--grey);
 }
 
 .sidebar-item:not(.add-task),
@@ -411,7 +421,7 @@ dialog[open] {
 button:hover {
   cursor: pointer;
 }
-.sidebar button:hover {
+.sidebar button:not(.project-form):hover {
   background-color: var(--on-hover);
 }
 

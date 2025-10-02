@@ -9,7 +9,6 @@ export let pageUIHandler = function () {
     taskUI.updateTasksUI(currentProject);
 
     projectTitle.textContent = currentProject.getName;
-    console.log(currentProject);
   }
 
   return { renderPage };
@@ -61,7 +60,7 @@ export const projectUIHandler = function () {
     editOption.setAttribute("class", "right-option");
     projectItem.setAttribute("id", id);
 
-    tag.textContent = "tag";
+    tag.textContent = "folder_special";
     projectTitle.textContent = name;
 
     projectContainer.appendChild(projectItem);
@@ -109,12 +108,22 @@ export const taskUIHandler = function () {
     }
   }
 
-  function createTask(project) {
-    const title = project.title;
-    const description = project.description;
-    const dueDate = project.dueDate;
-    const priority = project.priority;
-    const checked = project.checked;
+  function deleteTaskEventAdder(taskDelete, task, project) {
+    taskDelete.addEventListener("click", (e) => {
+      console.log(task.id);
+      project.deleteTodo(task);
+
+      updateTasksUI(project);
+    });
+  }
+
+  function createTask(task, project) {
+    const title = task.title;
+    const description = task.description;
+    const dueDate = task.dueDate;
+    const priority = task.priority;
+    const checked = task.checked;
+    const id = task.getId;
 
     const taskItem = document.createElement("div");
     const taskTexts = document.createElement("div");
@@ -138,7 +147,7 @@ export const taskUIHandler = function () {
     console.log(priority);
 
     //Assign all classes
-
+    taskItem.setAttribute("id", id);
     taskItem.setAttribute("class", "task-item");
     taskTexts.setAttribute("class", "task-texts");
     checkmark.setAttribute("class", `checkmark ${priority}`);
@@ -175,8 +184,12 @@ export const taskUIHandler = function () {
     const taskEditSelector = taskHeaderSelector.appendChild(taskEdit);
     taskEditSelector.appendChild(editIcon);
 
+    //add event listener to delete & edit options
+
     const taskDeleteSelector = taskHeaderSelector.appendChild(taskDelete);
     taskDeleteSelector.appendChild(trashIcon);
+
+    deleteTaskEventAdder(taskDeleteSelector, task, project);
 
     taskTextsSelector.appendChild(taskDescription);
 
@@ -191,7 +204,9 @@ export const taskUIHandler = function () {
     const todosArray = project.getTodosArray;
 
     todosArray.forEach((todo) => {
-      createTask(todo);
+      createTask(todo, project);
+
+      //Give each task the ability to delete and edit itself
     });
   }
 
@@ -204,7 +219,6 @@ export const taskUIHandler = function () {
 };
 
 export const dialogUIHandler = function () {
-  let pageUI = pageUIHandler();
   //Selecting project container
   const projectDropdown = document.getElementById("add-task-dialog-projects");
 

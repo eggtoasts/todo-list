@@ -17,6 +17,10 @@ export class Project {
     this.todosArray.push(todo);
   }
 
+  deleteTodo(todo) {
+    this.todosArray = this.todosArray.filter((e) => e.getId !== todo.getId);
+  }
+
   get getName() {
     return this.name;
   }
