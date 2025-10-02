@@ -106,7 +106,7 @@ body {
 
 .sidebar-item,
 .project-item {
-  font-size: 14px;
+  font-size: 15px;
   display: flex;
   align-items: center;
   height: 40px;
@@ -238,7 +238,7 @@ button {
   font-size: 24px;
   font-weight: bold;
 
-  padding: 15px 0px;
+  padding-bottom: 15px;
   /* margin-top: 25px; */
 }
 
@@ -262,14 +262,19 @@ button {
   align-items: center;
 }
 
-.task-header > .task-edit {
+.task-header > .task-edit,
+.task-header > .task-delete {
   margin-left: auto;
-  margin-right: 20px;
+  margin-right: 5px;
   border: none;
   height: 30px;
   width: 30px;
 
   background-color: white;
+}
+
+.task-delete span {
+  color: #e96161;
 }
 
 .task-title {
@@ -403,9 +408,11 @@ dialog[open] {
 }
 
 /* hover */
+button:hover {
+  cursor: pointer;
+}
 .sidebar button:hover {
   background-color: var(--on-hover);
-  cursor: pointer;
 }
 
 input:focus,
@@ -438,6 +445,6 @@ button:focus {
   }
 
   .main-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 0px 1fr;
   }
 }

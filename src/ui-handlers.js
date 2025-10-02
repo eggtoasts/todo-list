@@ -125,6 +125,9 @@ export const taskUIHandler = function () {
     const taskEdit = document.createElement("button");
     const editIcon = document.createElement("span");
 
+    const taskDelete = document.createElement("button");
+    const trashIcon = document.createElement("span");
+
     const taskDescription = document.createElement("div");
 
     const taskDate = document.createElement("div");
@@ -143,6 +146,8 @@ export const taskUIHandler = function () {
     taskTitle.setAttribute("class", "task-title");
     taskEdit.setAttribute("class", "task-edit");
     editIcon.setAttribute("class", "icon");
+    taskDelete.setAttribute("class", "task-delete");
+    trashIcon.setAttribute("class", "icon");
     taskDescription.setAttribute("class", "task-description");
     taskDate.setAttribute("class", "task-date");
     calendarIcon.setAttribute("class", "icon");
@@ -152,6 +157,7 @@ export const taskUIHandler = function () {
 
     taskTitle.textContent = title;
     editIcon.textContent = "edit_note";
+    trashIcon.textContent = "delete";
     taskDescription.textContent = description;
     calendarIcon.textContent = "date_range";
     dateText.textContent = dueDate;
@@ -167,8 +173,10 @@ export const taskUIHandler = function () {
 
     taskHeaderSelector.appendChild(taskTitle);
     const taskEditSelector = taskHeaderSelector.appendChild(taskEdit);
-
     taskEditSelector.appendChild(editIcon);
+
+    const taskDeleteSelector = taskHeaderSelector.appendChild(taskDelete);
+    taskDeleteSelector.appendChild(trashIcon);
 
     taskTextsSelector.appendChild(taskDescription);
 
@@ -242,6 +250,7 @@ export const UserInterface = function (currentSelectedProject) {
   //Updates UI of Project & Tasks
   const updateProjectUI = () => projectUI.updateProjectsUI(Proj);
 
+  //Renders project and dialog UI to our current Project data
   projectUI.renderPage(currentSelectedProject);
   dialogUI.updateDialogUI(Proj);
 
