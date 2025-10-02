@@ -6,7 +6,7 @@ export const initializeDefault = function () {
   const task = new Todos(
     "Play Persona 5 Royal",
     "olorum soluta pariatur itaque eligendi nobis praesentium iure tempore. Voluptatem!",
-    "11/11/11",
+    "2025-10-01",
     "priority-color-low",
     0
   );
@@ -14,7 +14,7 @@ export const initializeDefault = function () {
   const task2 = new Todos(
     "This should be second.",
     "olorum soluta pariatur itaque eligendi nobis praesentium iure tempore. Voluptatem!",
-    "11/11/11",
+    "2025-12-02",
     "priority-color-medium",
     0
   );
@@ -22,7 +22,7 @@ export const initializeDefault = function () {
   const task3 = new Todos(
     "This should be first.",
     "olorum soluta pariatur itaque eligendi nobis praesentium iure tempore. Voluptatem!",
-    "11/11/11",
+    "2025-05-12",
     "priority-color-high",
     0
   );

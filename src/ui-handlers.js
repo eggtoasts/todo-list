@@ -154,7 +154,7 @@ export const taskUIHandler = function () {
     editIcon.textContent = "edit_note";
     taskDescription.textContent = description;
     calendarIcon.textContent = "date_range";
-    dateText.textContent = "Random Date for now";
+    dateText.textContent = dueDate;
 
     //Append it to its respective div parents
     taskContainer.appendChild(taskItem);
