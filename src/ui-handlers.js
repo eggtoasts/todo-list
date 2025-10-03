@@ -89,7 +89,7 @@ export const projectUIHandler = function () {
   let createProjectItem = function (project) {
     //project has name, color, id
     const name = project.getName;
-    const color = project.getTitle;
+
     const id = project.getId;
 
     const projectItem = document.createElement("button");

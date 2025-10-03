@@ -1,9 +1,13 @@
 import { Todos } from "./todos.js";
 import { Proj } from "./projects-model.js";
-import { projectUIHandler } from "./ui-handlers.js";
+import { projectUIHandler, dialogUIHandler } from "./ui-handlers.js";
+import { Project } from "./project.js";
 
 export const eventHandling = (function () {
-  const { renderPage, displayProjectFormSidebarItem } = projectUIHandler();
+  const { renderPage, updateProjectsUI, displayProjectFormSidebarItem } =
+    projectUIHandler();
+
+  const { updateDialogUI } = dialogUIHandler();
   //Event handling for adding tasks
   const addTaskButton = document.querySelector(".add-task");
   const addTaskDialog = document.querySelector(".add-task-dialog");
@@ -35,6 +39,24 @@ export const eventHandling = (function () {
       });
 
       //Adding a new project page & adding it to our array
+      displayForm.addEventListener("keypress", (e) => {
+        //If the user presses enter, it gets added.
+        if (e.key === "Enter") {
+          e.preventDefault();
+          //Collect the title of the project
+          const projectTitle = document.getElementById(
+            "sidebar-project-name"
+          ).value;
+
+          //Now create that a project object, and add that into our Proj array
+          let newProject = new Project(projectTitle);
+
+          //Update sidebar and dialog
+          Proj.addProject(newProject);
+          updateProjectsUI(Proj);
+          updateDialogUI(Proj);
+        }
+      });
     }
   });
 
