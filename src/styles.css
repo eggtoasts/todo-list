@@ -145,22 +145,59 @@ body {
   color: var(--icon-color);
   font-size: 20px;
 }
+
 .sidebar-item,
 .project-item,
 .project-item input {
   background-color: var(--sidebar-color);
 }
+
 .sidebar-item p,
 .project-item div,
 .project-item input {
   margin-left: var(--left-margin);
 }
+.project-item .right-option {
+  margin-left: auto;
+  display: flex;
+}
+
+.project-form-options {
+  display: flex;
+}
+
+.right-option span {
+  font-size: 15px;
+  align-self: center;
+
+  font-weight: lighter;
+}
+
+.projects-item {
+  position: relative;
+}
+
+.project-item form {
+  width: 150px;
+}
+
+.project-cancel {
+  color: var(--red);
+}
+
+.project-add {
+  color: var(--main-color);
+}
 
 .project-item input {
-  padding: 5px 0px;
+  padding: 5px 5px;
   font-size: 15px;
-  width: 176px;
-  border-style: none;
+  width: 100%;
+
+  border-radius: 10px;
+  background-color: white;
+  border: 1.3px solid #a5a5a585;
+  font-weight: thin;
   color: var(--grey);
 }
 
@@ -204,6 +241,16 @@ button {
   margin-top: 20px;
   font-weight: bold;
   margin-bottom: var(--left-margin);
+}
+
+.icon.left,
+.project-item,
+.sidebar-item:not(.add-task) {
+  padding-left: 5px;
+}
+
+.add-task {
+  padding-left: 2px;
 }
 
 .sidebar-title,
@@ -415,6 +462,12 @@ dialog[open] {
 
 .cancel-add-task {
   background-color: #e4e4e4;
+}
+
+button {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 /* hover */

@@ -27,8 +27,8 @@ export const initializeDefault = function () {
     0
   );
 
-  const defaultProject = new Project("Default Project", "Blue", [], 1);
-  const secondProject = new Project("Second Project", "Blue", [], 2);
+  const defaultProject = new Project("Default Project 🏠", "Blue", [], 1);
+  const secondProject = new Project("Second Project 🌟", "Blue", [], 2);
   Proj.addProject(defaultProject);
   Proj.addProject(secondProject);
   defaultProject.addTodo(task);

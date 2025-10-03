@@ -18,6 +18,49 @@ export const projectUIHandler = function () {
   let pageUI = pageUIHandler();
   const projectContainer = document.querySelector(".projects-container");
 
+  function displayProjectFormSidebarItem() {
+    const projectFormItem = createProjectFormSidebarItem();
+    console.log(projectFormItem);
+    addProjectItem(projectFormItem);
+
+    //Returns the form for event handling
+    return projectFormItem;
+  }
+
+  function createProjectFormSidebarItem() {
+    const projectItem = document.createElement("button");
+    const icon = document.createElement("span");
+    const projectForm = document.createElement("form");
+    const projectInput = document.createElement("input");
+
+    const option = document.createElement("div");
+    const projectCancel = document.createElement("span");
+
+    projectItem.setAttribute("class", "project-item project-form");
+    icon.setAttribute("class", "icon");
+    projectForm.setAttribute("class", "sidebar-form");
+
+    projectInput.setAttribute("type", "text");
+    projectInput.setAttribute("id", "sidebar-project-name");
+    projectInput.setAttribute("placeholder", "New Project Name");
+    projectInput.setAttribute("class", "title");
+
+    option.setAttribute("class", "right-option");
+    projectCancel.setAttribute("class", "icon project-cancel");
+
+    icon.textContent = "tag";
+    projectCancel.textContent = "cancel";
+
+    projectItem.appendChild(icon);
+    const projectFormWrapper = projectItem.appendChild(projectForm);
+    projectFormWrapper.appendChild(projectInput);
+
+    const optionWrapper = projectItem.appendChild(option);
+    optionWrapper.appendChild(projectCancel);
+
+    return projectItem;
+  }
+
   function clearProjectUI(projectContainer) {
     let projectChild = projectContainer.lastElementChild;
 
@@ -93,7 +136,12 @@ export const projectUIHandler = function () {
   //Destructures renderPage from pageUI
   const { renderPage } = pageUI;
 
-  return { updateProjectsUI, renderPage };
+  return {
+    updateProjectsUI,
+    renderPage,
+    displayProjectFormSidebarItem,
+    pageUI,
+  };
 };
 
 export const taskUIHandler = function () {
@@ -257,6 +305,7 @@ export const dialogUIHandler = function () {
 
 export const UserInterface = function (currentSelectedProject) {
   //Selecting project container
+  const pageUI = pageUIHandler();
   const projectUI = projectUIHandler();
   const dialogUI = dialogUIHandler();
   const { renderPage } = projectUI;

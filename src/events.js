@@ -1,10 +1,10 @@
 import { Todos } from "./todos.js";
 import { Proj } from "./projects-model.js";
-import { pageUIHandler } from "./ui-handlers.js";
+import { projectUIHandler } from "./ui-handlers.js";
 
 export const eventHandling = (function () {
-  let pageUI = pageUIHandler();
-  //inputs
+  const { renderPage, displayProjectFormSidebarItem } = projectUIHandler();
+  //Event handling for adding tasks
   const addTaskButton = document.querySelector(".add-task");
   const addTaskDialog = document.querySelector(".add-task-dialog");
   const addTaskSubmit = document.querySelector(".submit-add-task");
@@ -17,6 +17,26 @@ export const eventHandling = (function () {
   const addTaskTitle = document.getElementById("add-task-dialog-title");
   const addTaskProjects = document.getElementById("add-task-dialog-projects");
   const addTaskDate = document.getElementById("add-task-dialog-date");
+
+  //Event handling for Projects
+  const addProjectButton = document.querySelector(".add-projects");
+  addProjectButton.addEventListener("click", (e) => {
+    const addProjectButtonSelector = document.querySelector(".project-form");
+    if (addProjectButtonSelector == null) {
+      //We create a sidebar form to create a project.
+      const displayForm = displayProjectFormSidebarItem();
+
+      console.log(displayForm);
+
+      //Deletion event
+      displayForm.addEventListener("click", (e) => {
+        //If the user clicks on the x, the form gets deleted
+        if (e.target.className === "icon project-cancel") displayForm.remove();
+      });
+
+      //Adding a new project page & adding it to our array
+    }
+  });
 
   addTaskButton.addEventListener("click", (e) => {
     addTaskDialog.showModal();
@@ -35,9 +55,8 @@ export const eventHandling = (function () {
     );
 
     projectTo.addTodo(newTask);
-    console.log(projectTo);
 
-    pageUI.renderPage(projectTo);
+    renderPage(projectTo);
 
     //Create task item and add it to the inputted project array.
   });
