@@ -477,6 +477,10 @@ button {
 
 /* Task Edit form */
 
+.task-item > .edit-task-container {
+  margin-bottom: 20px;
+}
+
 .edit-task-container {
   display: flex;
   flex-direction: column;
@@ -507,8 +511,10 @@ button {
   resize: none;
   min-height: 80px;
 }
-#edit-task-priority {
-  margin-right: 50px;
+
+.task-item,
+.edit-task-container {
+  min-width: 384.5px;
 }
 
 .task-button-wrapper {
@@ -521,10 +527,6 @@ button {
   padding: 5px;
   /* height: 240px; */
   border-style: none;
-}
-
-.edit-task-container {
-  min-width: 400px;
 }
 
 .task-button-wrapper {
@@ -548,6 +550,7 @@ button {
 .edit-task-add {
   color: white;
   background-color: var(--main-color);
+  margin-right: 10px;
 }
 
 .task-options {

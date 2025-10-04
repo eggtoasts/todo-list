@@ -14,6 +14,7 @@ export const eventHandling = (function () {
   const addTaskSubmit = document.querySelector(".submit-add-task");
   const addTaskCancel = document.querySelector(".cancel-add-task");
 
+  // For dialog (Adding tasks)
   const addTaskPriority = document.getElementById("add-task-dialog-priority");
   const addTaskDescription = document.getElementById(
     "add-task-dialog-description"

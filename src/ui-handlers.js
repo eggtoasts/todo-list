@@ -1,6 +1,18 @@
 import { Proj } from "./projects-model.js";
 
 //DOM stuff
+
+let uiHelpers = function () {
+  function clear(taskChild, container) {
+    while (taskChild != null) {
+      container.removeChild(taskChild);
+      taskChild = container.lastElementChild;
+    }
+  }
+
+  return { clear };
+};
+
 export let pageUIHandler = function () {
   const projectTitle = document.querySelector(".project-title");
   const taskUI = taskUIHandler();
@@ -17,6 +29,7 @@ export let pageUIHandler = function () {
 export const projectUIHandler = function () {
   let pageUI = pageUIHandler();
   const projectContainer = document.querySelector(".projects-container");
+  const { clear } = uiHelpers();
 
   function displayProjectFormSidebarItem() {
     const projectFormItem = createProjectFormSidebarItem();
@@ -64,10 +77,7 @@ export const projectUIHandler = function () {
   function clearProjectUI(projectContainer) {
     let projectChild = projectContainer.lastElementChild;
 
-    while (projectChild != null) {
-      projectContainer.removeChild(projectChild);
-      projectChild = projectContainer.lastElementChild;
-    }
+    clear(projectChild, projectContainer);
   }
 
   const addProjectEvent = function (projectItem) {
@@ -146,14 +156,12 @@ export const projectUIHandler = function () {
 
 export const taskUIHandler = function () {
   const taskContainer = document.querySelector(".task-container");
+  const { clear } = uiHelpers();
 
-  function clearTaskUI() {
+  function clearTaskUI(taskContainer) {
     let taskChild = taskContainer.lastElementChild;
 
-    while (taskChild != null) {
-      taskContainer.removeChild(taskChild);
-      taskChild = taskContainer.lastElementChild;
-    }
+    clear(taskChild, taskContainer);
   }
 
   function deleteTaskEventAdder(taskDelete, task, project) {
@@ -164,6 +172,10 @@ export const taskUIHandler = function () {
       updateTasksUI(project);
     });
   }
+
+  let addTaskItem = function (taskItem) {
+    taskContainer.appendChild(taskItem);
+  };
 
   function createTask(task, project) {
     const title = task.title;
@@ -232,11 +244,10 @@ export const taskUIHandler = function () {
     const taskEditSelector = taskHeaderSelector.appendChild(taskEdit);
     taskEditSelector.appendChild(editIcon);
 
-    //add event listener to delete & edit options
-
     const taskDeleteSelector = taskHeaderSelector.appendChild(taskDelete);
     taskDeleteSelector.appendChild(trashIcon);
 
+    //Add ability to delete itself
     deleteTaskEventAdder(taskDeleteSelector, task, project);
 
     taskTextsSelector.appendChild(taskDescription);
@@ -245,21 +256,121 @@ export const taskUIHandler = function () {
 
     taskContainerSelector.appendChild(calendarIcon);
     taskContainerSelector.appendChild(dateText);
+
+    //Add Ability to edit itself
+    editTaskEventAdder(taskEditSelector, taskItem, project);
+
+    return taskItem;
   }
 
+  const editTaskEventAdder = function (taskEditButton, taskItem, project) {
+    taskEditButton.addEventListener("click", (e) => {
+      console.log(taskItem.id);
+
+      //Select the task (w/ its ID)
+      const currTaskItem = document.getElementById(taskItem.id);
+      let currTaskChild = currTaskItem.lastElementChild;
+
+      //Clear it (We're not deleting it)
+      clear(currTaskChild, currTaskItem);
+
+      //Now add in the edit task form'''''
+      const newEditTaskForm = createEditTaskItem(taskItem);
+
+      //Add it to the current container
+      currTaskItem.appendChild(newEditTaskForm);
+    });
+  };
+
+  function createEditTaskItem(taskItem) {
+    const editTaskItem = document.createElement("div");
+    const editTitle = document.createElement("input");
+    const editDescription = document.createElement("textarea");
+
+    const taskOptions = document.createElement("div");
+    const editDate = document.createElement("input");
+
+    //Priorities
+    const editTaskPriorityWrapper = document.createElement("select");
+    const priorityColorNone = document.createElement("option");
+    const priorityColorLow = document.createElement("option");
+    const priorityColorMedium = document.createElement("option");
+    const priorityColorHigh = document.createElement("option");
+
+    //Buttons
+    const buttonWrapper = document.createElement("div");
+    const cancel = document.createElement("button");
+    const submit = document.createElement("button");
+
+    //Apply all classes / attributes
+    editTaskItem.setAttribute("class", "edit-task-container");
+    editTitle.setAttribute("id", "edit-task-title");
+    editDescription.setAttribute("id", "edit-task-description");
+    editTitle.setAttribute("type", "text");
+    editTitle.setAttribute("placeholder", "Enter Title");
+    editDescription.setAttribute("placeholder", "(Optional)");
+
+    editTitle.setAttribute("placeholder", "Enter Title");
+    editDescription.setAttribute("placeholder", "(Optional)");
+
+    taskOptions.setAttribute("class", "task-options");
+    editDate.setAttribute("id", "edit-task-date");
+    editDate.setAttribute("type", "date");
+
+    editTaskPriorityWrapper.setAttribute("id", "edit-task-priority");
+    priorityColorNone.setAttribute("value", "none");
+    priorityColorLow.setAttribute("value", "priority-color-low");
+    priorityColorMedium.setAttribute("value", "priority-color-medium");
+    priorityColorHigh.setAttribute("value", "priority-color-high");
+
+    priorityColorNone.textContent = "None";
+    priorityColorLow.textContent = "Low";
+    priorityColorMedium.textContent = "Medium";
+    priorityColorHigh.textContent = "High";
+
+    buttonWrapper.setAttribute("class", "task-button-wrapper");
+    cancel.setAttribute("class", "edit-task-cancel");
+    submit.setAttribute("class", "edit-task-add");
+
+    //Add text content
+    cancel.textContent = "Cancel";
+    submit.textContent = "Add";
+
+    //Now add them all together ~~
+
+    editTaskItem.appendChild(editTitle);
+    editTaskItem.appendChild(editDescription);
+
+    const taskOptionsWrapper = editTaskItem.appendChild(taskOptions);
+    taskOptionsWrapper.appendChild(editDate);
+    const selector = taskOptionsWrapper.appendChild(editTaskPriorityWrapper);
+    selector.appendChild(priorityColorNone);
+    selector.appendChild(priorityColorLow);
+    selector.appendChild(priorityColorMedium);
+    selector.appendChild(priorityColorHigh);
+
+    const buttons = taskOptionsWrapper.appendChild(buttonWrapper);
+    buttons.appendChild(cancel);
+    buttons.appendChild(submit);
+
+    return editTaskItem;
+  }
   function createAllTasks(project) {
     console.log(project);
     const todosArray = project.getTodosArray;
 
     todosArray.forEach((todo) => {
-      createTask(todo, project);
+      const newTask = createTask(todo, project);
+
+      //Add newly created task to DOM
+      addTaskItem(newTask);
 
       //Give each task the ability to delete and edit itself
     });
   }
 
   function updateTasksUI(project) {
-    clearTaskUI();
+    clearTaskUI(taskContainer);
     createAllTasks(project);
   }
 
@@ -269,14 +380,12 @@ export const taskUIHandler = function () {
 export const dialogUIHandler = function () {
   //Selecting project container
   const projectDropdown = document.getElementById("add-task-dialog-projects");
+  const { clear } = uiHelpers();
 
   function clearUI(container) {
     let taskChild = container.lastElementChild;
 
-    while (taskChild != null) {
-      container.removeChild(taskChild);
-      taskChild = container.lastElementChild;
-    }
+    clear(taskChild, container);
   }
 
   function createProjectOption(project) {
@@ -305,7 +414,7 @@ export const dialogUIHandler = function () {
 
 export const UserInterface = function (currentSelectedProject) {
   //Selecting project container
-  const pageUI = pageUIHandler();
+  // const pageUI = pageUIHandler();
   const projectUI = projectUIHandler();
   const dialogUI = dialogUIHandler();
   const { renderPage } = projectUI;
