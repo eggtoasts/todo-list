@@ -310,12 +310,12 @@ export const UserInterface = function (currentSelectedProject) {
   const dialogUI = dialogUIHandler();
   const { renderPage } = projectUI;
 
-  // //Updates UI of Project & Tasks
-  // const updateProjectUI = () => projectUI.updateProjectsUI(Proj);
+  //Updates UI of Project & Tasks
+  const updateProjectUI = () => projectUI.updateProjectsUI(Proj);
 
-  // //Renders project and dialog UI to our current Project data
-  // projectUI.renderPage(currentSelectedProject);
-  // dialogUI.updateDialogUI(Proj);
+  //Renders project and dialog UI to our current Project data
+  projectUI.renderPage(currentSelectedProject);
+  dialogUI.updateDialogUI(Proj);
 
   return { updateProjectUI, renderPage };
 };
