@@ -13,9 +13,11 @@ let uiHelpers = function () {
   return { clear };
 };
 
-export let pageUIHandler = function () {
+export let pageUIHandler = function (updateProjectsCallback) {
   const projectTitle = document.querySelector(".project-title");
-  const taskUI = taskUIHandler();
+
+  //We're passing updateProjectsUI to taskUIHandler
+  const taskUI = taskUIHandler(updateProjectsCallback);
 
   function renderPage(currentProject) {
     taskUI.updateTasksUI(currentProject);
@@ -27,9 +29,26 @@ export let pageUIHandler = function () {
 };
 
 export const projectUIHandler = function () {
-  let pageUI = pageUIHandler();
   const projectContainer = document.querySelector(".projects-container");
   const { clear } = uiHelpers();
+
+  let updateProjectsUI = function () {
+    clearProjectUI(projectContainer);
+
+    //We go through every project in the Projects array.
+    const projectsArray = Proj.getProjectsArray();
+    projectsArray.forEach((projectItem) => {
+      console.log("Created a Project item ");
+      //Creates project item element
+      const currProject = createProjectItem(projectItem);
+
+      //Add project item into our DOM
+      addProjectItem(currProject);
+    });
+  };
+
+  //Dependency injection~ (We're injecting updateProjectsUI to pageUI :p)
+  let pageUI = pageUIHandler(updateProjectsUI);
 
   function displayProjectFormSidebarItem() {
     const projectFormItem = createProjectFormSidebarItem();
@@ -106,41 +125,34 @@ export const projectUIHandler = function () {
     const tag = document.createElement("span");
     const projectTitle = document.createElement("div");
     const editOption = document.createElement("div");
+    const editIcon = document.createElement("span");
+    const numberOfTasks = document.createElement("span");
 
     projectItem.setAttribute("class", "project-item");
     tag.setAttribute("class", "icon");
     projectTitle.setAttribute("class", "title");
     editOption.setAttribute("class", "right-option");
+    editIcon.setAttribute("class", "icon");
+    numberOfTasks.setAttribute("class", "number-of-tasks");
     projectItem.setAttribute("id", id);
 
     tag.textContent = "folder_special";
+    editIcon.textContent = "edit";
     projectTitle.textContent = name;
+    numberOfTasks.textContent = project.getTodosSize();
+    console.log(project.getTodosSize);
 
     projectContainer.appendChild(projectItem);
     projectItem.appendChild(tag);
     projectItem.appendChild(projectTitle);
-    projectItem.appendChild(editOption);
+    const rightOption = projectItem.appendChild(editOption);
+    rightOption.appendChild(editIcon);
+    rightOption.appendChild(numberOfTasks);
 
     //Add event
     addProjectEvent(projectItem);
 
     return projectItem;
-  };
-
-  let updateProjectsUI = function (projects) {
-    clearProjectUI(projectContainer);
-
-    //We go through every project in the Projects array.
-    const projectsArray = projects.getProjectsArray();
-    projectsArray.forEach((projectItem) => {
-      console.log("Created a Project item ");
-
-      //Creates project item element
-      const currProject = createProjectItem(projectItem);
-
-      //Add project item into our DOM
-      addProjectItem(currProject);
-    });
   };
 
   //Destructures renderPage from pageUI
@@ -154,7 +166,7 @@ export const projectUIHandler = function () {
   };
 };
 
-export const taskUIHandler = function () {
+export const taskUIHandler = function (updateProjectsCallback) {
   const taskContainer = document.querySelector(".task-container");
   const { clear } = uiHelpers();
 
@@ -434,14 +446,20 @@ export const taskUIHandler = function () {
 
       //Add newly created task to DOM
       addTaskItem(newTask);
-
-      //Give each task the ability to delete and edit itself
     });
   }
 
   function updateTasksUI(project) {
     clearTaskUI(taskContainer);
     createAllTasks(project);
+
+    //UpdateProjectsCallback contains updateProjectsUI
+    //If we passed it, use it
+    if (updateProjectsCallback) {
+      //If we updateTasksUi, the number of tasks will change
+      //So we display that in project sidebar as well
+      updateProjectsCallback();
+    }
   }
 
   return { updateTasksUI };
@@ -484,7 +502,6 @@ export const dialogUIHandler = function () {
 
 export const UserInterface = function (currentSelectedProject) {
   //Selecting project container
-  // const pageUI = pageUIHandler();
   const projectUI = projectUIHandler();
   const dialogUI = dialogUIHandler();
   const { renderPage } = projectUI;

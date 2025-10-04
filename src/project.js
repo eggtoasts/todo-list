@@ -7,7 +7,9 @@ export class Project {
     this.id = crypto.randomUUID();
   }
 
-  get getTodosSize() {}
+  getTodosSize() {
+    return this.todosArray.length;
+  }
 
   get getTodosArray() {
     return this.todosArray;
