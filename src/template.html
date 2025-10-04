@@ -127,7 +127,7 @@
             </div>
             <!-- dupe tasks -->
 
-            <div class="task-item">
+            <!-- <div class="task-item">
               <button class="checkmark priority-color-low"></button>
 
               <div class="task-texts">
@@ -204,26 +204,38 @@
                   <div class="task-date-text">Sat, Sep 27</div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <!--  -->
 
             <!-- edit tasks -->
 
-            <!-- <div class="edit">
-              <input type="text" placeholder="Enter Title" />
+            <div class="edit-task-container">
+              <input
+                type="text"
+                placeholder="Enter Title"
+                id="edit-task-title"
+              />
 
-              <textarea>(Optional)</textarea>
+              <textarea
+                id="edit-task-description"
+                placeholder="(Optional)"
+              ></textarea>
 
-              <div class="task-buttons">
+              <div class="task-options">
                 <input type="date" />
-                <select>
-                  <option value="projects">projects</option>
-                  <option value="projects">projects1</option>
+                <select id="edit-task-priority">
+                  <option value="none">No priority</option>
+                  <option value="priority-color-low">Low</option>
+                  <option value="priority-color-medium">Medium</option>
+                  <option value="priority-color-high">High</option>
                 </select>
-                <button>Cancel</button>
-                <button>Submit</button>
+
+                <div class="task-button-wrapper">
+                  <button class="edit-task-cancel">Cancel</button>
+                  <button class="edit-task-add">Submit</button>
+                </div>
               </div>
-            </div> -->
+            </div>
 
             <!--  -->
           </div>
@@ -255,7 +267,7 @@
               <option value="projects">Projects1</option>
             </select>
             <select id="add-task-dialog-priority">
-              <option value="none">None</option>
+              <option value="none">No priority</option>
               <option value="priority-color-low">Low</option>
               <option value="priority-color-medium">Medium</option>
               <option value="priority-color-high">High</option>

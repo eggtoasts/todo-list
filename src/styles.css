@@ -470,6 +470,48 @@ button {
   user-select: none; /* Standard syntax */
 }
 
+/* Task Edit form */
+
+.edit-task-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-options {
+  display: flex;
+  align-items: center;
+}
+
+.task-button-wrapper {
+  margin-left: auto;
+}
+
+.edit-task-container > input,
+.edit-task-container > textarea {
+  /* border-style: none; */
+}
+
+.edit-task-container button {
+  padding: 10px;
+  font-weight: bold;
+  margin-left: 5px;
+  border-style: none;
+}
+
+.edit-task-cancel {
+  color: var(--grey);
+  background-color: var(--sidebar-color);
+}
+
+.edit-task-add {
+  color: white;
+  background-color: var(--main-color);
+}
+
+#edit-task-description {
+  resize: none;
+}
+
 /* hover */
 button:hover {
   cursor: pointer;
