@@ -18,6 +18,18 @@
     format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
+.project-item:hover .right-option .number-of-tasks {
+  display: none;
+}
+
+.project-item .edit {
+  display: none;
+}
+
+.project-item:hover .right-option .edit {
+  display: block;
+}
+
 :root {
   --icon-color: #666666;
   --main-color: rgb(46, 92, 244);

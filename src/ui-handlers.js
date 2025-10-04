@@ -1,4 +1,5 @@
 import { Proj } from "./projects-model.js";
+import { Project } from "./project.js";
 
 //DOM stuff
 
@@ -30,6 +31,7 @@ export let pageUIHandler = function (updateProjectsCallback) {
 
 export const projectUIHandler = function () {
   const projectContainer = document.querySelector(".projects-container");
+  const { updateDialogUI } = dialogUIHandler();
   const { clear } = uiHelpers();
 
   let updateProjectsUI = function () {
@@ -43,7 +45,7 @@ export const projectUIHandler = function () {
       const currProject = createProjectItem(projectItem);
 
       //Add project item into our DOM
-      addProjectItem(currProject);
+      addProjectItem(projectContainer, currProject);
     });
   };
 
@@ -52,14 +54,13 @@ export const projectUIHandler = function () {
 
   function displayProjectFormSidebarItem() {
     const projectFormItem = createProjectFormSidebarItem();
-    console.log(projectFormItem);
-    addProjectItem(projectFormItem);
+    addProjectItem(projectContainer, projectFormItem);
 
     //Returns the form for event handling
     return projectFormItem;
   }
 
-  function createProjectFormSidebarItem() {
+  function createProjectFormSidebarItem(id) {
     const projectItem = document.createElement("button");
     const icon = document.createElement("span");
     const projectForm = document.createElement("form");
@@ -71,6 +72,10 @@ export const projectUIHandler = function () {
     projectItem.setAttribute("class", "project-item project-form");
     icon.setAttribute("class", "icon");
     projectForm.setAttribute("class", "sidebar-form");
+
+    if (id) {
+      projectItem.setAttribute("id", id);
+    }
 
     projectInput.setAttribute("type", "text");
     projectInput.setAttribute("id", "sidebar-project-name");
@@ -90,12 +95,66 @@ export const projectUIHandler = function () {
     const optionWrapper = projectItem.appendChild(option);
     optionWrapper.appendChild(projectCancel);
 
+    //Deletion event
+    sidebarDeletionEvent(projectItem, id);
+
+    //Adding a new project page & adding it to our array
+    sidebarAdditionEvent(projectItem, id);
+
     return projectItem;
+  }
+
+  function sidebarDeletionEvent(projectItem, id) {
+    projectItem.addEventListener("click", (e) => {
+      //If the user clicks on the x, the form gets deleted
+      if (e.target.className === "icon project-cancel") {
+        //If this is a existing project, re-render page
+        if (id) {
+          updateProjectsUI(Proj);
+        }
+
+        //If this was from the (+) button, then just remove it from DOM
+        if (e.target.id == "") projectItem.remove();
+      }
+    });
+  }
+
+  function sidebarAdditionEvent(projectItem, id) {
+    projectItem.addEventListener("keypress", (e) => {
+      //If the user presses enter, it gets added.
+      if (e.key === "Enter") {
+        e.preventDefault();
+        //If it already exists (by checking id), change project name.
+        if (id) {
+          const currentProject = Proj.findProjectById(id);
+          currentProject.setName = document.getElementById(
+            "sidebar-project-name"
+          ).value;
+          renderPage(currentProject);
+          updateProjectsUI(Proj);
+          updateDialogUI(Proj);
+        } else {
+          //If not, add it.
+
+          //Collect the title of the project
+          const projectTitle = document.getElementById(
+            "sidebar-project-name"
+          ).value;
+
+          //Now create that a project object, and add that into our Proj array
+          let newProject = new Project(projectTitle);
+
+          //Update sidebar and dialog
+          Proj.addProject(newProject);
+          updateProjectsUI(Proj);
+          updateDialogUI(Proj);
+        }
+      }
+    });
   }
 
   function clearProjectUI(projectContainer) {
     let projectChild = projectContainer.lastElementChild;
-
     clear(projectChild, projectContainer);
   }
 
@@ -104,6 +163,11 @@ export const projectUIHandler = function () {
       //when we click on a project tab,
       //we render its page.
 
+      //If user is pressing the edit symbol instead, do nothing.
+      if (e.target.className.includes("edit")) {
+        return;
+      }
+
       const projectId = projectItem["id"];
       const currentProject = Proj.findProjectById(projectId);
 
@@ -111,8 +175,27 @@ export const projectUIHandler = function () {
     });
   };
 
-  let addProjectItem = function (currProject) {
-    projectContainer.appendChild(currProject);
+  const addEditEvent = function (projectItem, editIcon, id) {
+    editIcon.addEventListener("click", (e) => {
+      const addProjectButtonSelector = document.querySelector(".project-form");
+      if (addProjectButtonSelector !== null) {
+        return;
+      }
+      //Clear the current project tab
+      clearProjectUI(projectItem);
+
+      //Create sidebarform
+      const displayForm = createProjectFormSidebarItem(id);
+
+      //Add the form adjacent to our current projectItem
+      projectItem.insertAdjacentElement("afterend", displayForm);
+
+      projectItem.remove();
+    });
+  };
+
+  let addProjectItem = function (container, currProject) {
+    container.appendChild(currProject);
   };
 
   let createProjectItem = function (project) {
@@ -132,7 +215,7 @@ export const projectUIHandler = function () {
     tag.setAttribute("class", "icon");
     projectTitle.setAttribute("class", "title");
     editOption.setAttribute("class", "right-option");
-    editIcon.setAttribute("class", "icon");
+    editIcon.setAttribute("class", "icon edit");
     numberOfTasks.setAttribute("class", "number-of-tasks");
     projectItem.setAttribute("id", id);
 
@@ -140,7 +223,6 @@ export const projectUIHandler = function () {
     editIcon.textContent = "edit";
     projectTitle.textContent = name;
     numberOfTasks.textContent = project.getTodosSize();
-    console.log(project.getTodosSize);
 
     projectContainer.appendChild(projectItem);
     projectItem.appendChild(tag);
@@ -149,8 +231,11 @@ export const projectUIHandler = function () {
     rightOption.appendChild(editIcon);
     rightOption.appendChild(numberOfTasks);
 
-    //Add event
+    //Add event that renders the page whenever a project tab is clicked
     addProjectEvent(projectItem);
+
+    //Add event that lets user edit a project's name, or delete it.
+    addEditEvent(projectItem, editIcon, id);
 
     return projectItem;
   };
@@ -178,7 +263,6 @@ export const taskUIHandler = function (updateProjectsCallback) {
 
   function deleteTaskEventAdder(taskDelete, task, project) {
     taskDelete.addEventListener("click", (e) => {
-      console.log(task.id);
       project.deleteTodo(task);
 
       updateTasksUI(project);
@@ -214,9 +298,6 @@ export const taskUIHandler = function (updateProjectsCallback) {
     const taskDate = document.createElement("div");
     const calendarIcon = document.createElement("div");
     const dateText = document.createElement("div");
-
-    //priority
-    console.log(priority);
 
     //Assign all classes
     taskItem.setAttribute("id", id);
@@ -408,8 +489,6 @@ export const taskUIHandler = function (updateProjectsCallback) {
         break;
     }
 
-    console.log(currTodo.getPriority);
-
     //Now add them all together ~~
 
     editTaskItem.appendChild(editTitle);
@@ -438,7 +517,6 @@ export const taskUIHandler = function (updateProjectsCallback) {
     ];
   }
   function createAllTasks(project) {
-    console.log(project);
     const todosArray = project.getTodosArray;
 
     todosArray.forEach((todo) => {
@@ -484,7 +562,6 @@ export const dialogUIHandler = function () {
   }
 
   function createAllDialogs(allProjects) {
-    console.log(allProjects.getProjectsArray());
     allProjects.getProjectsArray().forEach((proj) => {
       const projectOption = createProjectOption(proj);
       projectOption.textContent = proj.getName;

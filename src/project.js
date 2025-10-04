@@ -33,6 +33,10 @@ export class Project {
     return this.name;
   }
 
+  set setName(name) {
+    this.name = name;
+  }
+
   get getColor() {
     return this.color;
   }
