@@ -27,8 +27,6 @@ export class Todos {
     return this.title;
   }
 
-  set setTitle(title) {}
-
   get getId() {
     return this.id;
   }
@@ -41,10 +39,23 @@ export class Todos {
     return this.description;
   }
 
-  set getDate(date) {}
+  set setDate(date) {
+    this.date = date;
+  }
+
+  set setTitle(title) {
+    this.title = title;
+  }
 
   get getPriority() {}
-  set setPriority(c) {}
+
+  set setPriority(priority) {
+    this.priorirty = priority;
+  }
+
+  set setDescription(description) {
+    this.description = description;
+  }
 
   get getChecked() {}
   set setChecked(c) {}

@@ -13,6 +13,12 @@ export class Project {
     return this.todosArray;
   }
 
+  findTodoById(projectId) {
+    const currentTodo = this.getTodosArray.find((e) => e.id === projectId);
+
+    return currentTodo;
+  }
+
   addTodo(todo) {
     this.todosArray.push(todo);
   }

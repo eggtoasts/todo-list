@@ -267,22 +267,55 @@ export const taskUIHandler = function () {
     taskEditButton.addEventListener("click", (e) => {
       console.log(taskItem.id);
 
-      //Select the task (w/ its ID)
+      //Get the task id from DOM
       const currTaskItem = document.getElementById(taskItem.id);
       let currTaskChild = currTaskItem.lastElementChild;
 
       //Clear it (We're not deleting it)
       clear(currTaskChild, currTaskItem);
 
-      //Now add in the edit task form'''''
-      const newEditTaskForm = createEditTaskItem(taskItem);
+      //find the todo object in project array
+      const currTodo = project.findTodoById(taskItem.id);
 
+      //Now add in the edit task (w/ its ID and original title & description)
+      const arr = createEditTaskItem(taskItem, currTodo);
+      const newEditTaskItem = arr[0],
+        cancel = arr[1],
+        submit = arr[2],
+        title = arr[3],
+        desc = arr[4],
+        date = arr[5],
+        priority = arr[6];
+
+      console.log(newEditTaskItem);
       //Add it to the current container
-      currTaskItem.appendChild(newEditTaskForm);
+      currTaskItem.appendChild(newEditTaskItem);
+
+      //If user presses submit, we edit the current item
+      // then simply render the page again.
+      submit.addEventListener("click", (e) => {
+        console.log("found ");
+        console.log(currTodo);
+
+        //Set the new item w/ the input
+        currTodo.setTitle = title.value;
+        currTodo.setDescription = desc.value;
+        currTodo.setDate = date.value;
+        currTodo.setPriority = priority.value;
+
+        updateTasksUI(project);
+      });
+
+      //If the user exits out of the edit container
+      // (This happens by):
+      // 1) Clicking another page
+      // 2) Trying to edit ANOTHER task
+
+      // Clicking anywhere else shouldn't close the edit window
     });
   };
 
-  function createEditTaskItem(taskItem) {
+  function createEditTaskItem(taskItem, currTodo) {
     const editTaskItem = document.createElement("div");
     const editTitle = document.createElement("input");
     const editDescription = document.createElement("textarea");
@@ -336,6 +369,12 @@ export const taskUIHandler = function () {
     cancel.textContent = "Cancel";
     submit.textContent = "Add";
 
+    //Retain original values
+    editTitle.value = currTodo.getTitle;
+    editDescription.value = currTodo.getDescription;
+    editTaskPriorityWrapper.value = currTodo.getPriority;
+    editDate.value = currTodo.getDate;
+
     //Now add them all together ~~
 
     editTaskItem.appendChild(editTitle);
@@ -353,7 +392,15 @@ export const taskUIHandler = function () {
     buttons.appendChild(cancel);
     buttons.appendChild(submit);
 
-    return editTaskItem;
+    return [
+      editTaskItem,
+      cancel,
+      submit,
+      editTitle,
+      editDescription,
+      editDate,
+      editTaskPriorityWrapper,
+    ];
   }
   function createAllTasks(project) {
     console.log(project);
