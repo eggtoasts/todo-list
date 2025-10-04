@@ -178,11 +178,11 @@ export const taskUIHandler = function () {
   };
 
   function createTask(task, project) {
-    const title = task.title;
-    const description = task.description;
-    const dueDate = task.dueDate;
-    const priority = task.priority;
-    const checked = task.checked;
+    const title = task.getTitle;
+    const description = task.getDescription;
+    const dueDate = task.getDate;
+    const priority = task.getPriority;
+
     const id = task.getId;
 
     const taskItem = document.createElement("div");
@@ -265,7 +265,12 @@ export const taskUIHandler = function () {
 
   const editTaskEventAdder = function (taskEditButton, taskItem, project) {
     taskEditButton.addEventListener("click", (e) => {
-      console.log(taskItem.id);
+      //Check if another form exists
+      const checkTaskEditExist = document.querySelector(".edit-task-container");
+      if (checkTaskEditExist !== null) {
+        //Render page so that will dissapear.
+        updateTasksUI(project);
+      }
 
       //Get the task id from DOM
       const currTaskItem = document.getElementById(taskItem.id);
