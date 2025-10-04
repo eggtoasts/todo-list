@@ -357,7 +357,7 @@ export const taskUIHandler = function () {
     priorityColorNone.setAttribute("value", "none");
     priorityColorLow.setAttribute("value", "priority-color-low");
     priorityColorMedium.setAttribute("value", "priority-color-medium");
-    priorityColorHigh.setAttribute("value", `priority-color-high `);
+    priorityColorHigh.setAttribute("value", "priority-color-high");
 
     priorityColorNone.textContent = "None";
     priorityColorLow.textContent = "Low";
@@ -390,6 +390,8 @@ export const taskUIHandler = function () {
         priorityColorHigh.setAttribute("selected", "");
         break;
     }
+
+    console.log(currTodo.getPriority);
 
     //Now add them all together ~~
 
