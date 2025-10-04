@@ -4,14 +4,14 @@ export class Todos {
   constructor(title, description, dueDate, priority, checked, id) {
     this.title = title;
     this.description = description;
-    this.dueDate = this.dueDateParser(dueDate);
+    this.dueDate = dueDate;
     this.priority = priority;
     this.checked = 0;
     this.id = crypto.randomUUID();
   }
 
-  dueDateParser(calendarText) {
-    const date = new Date(calendarText);
+  dueDateParser() {
+    const date = new Date(this.dueDate);
     const options = {
       year: "numeric",
       month: "short",
@@ -32,25 +32,27 @@ export class Todos {
   }
 
   get getDate() {
-    return this.date;
+    return this.dueDate;
   }
 
   get getDescription() {
     return this.description;
   }
 
-  set setDate(date) {
-    this.date = date;
+  set setDate(dueDate) {
+    this.dueDate = dueDate;
   }
 
   set setTitle(title) {
     this.title = title;
   }
 
-  get getPriority() {}
+  get getPriority() {
+    return this.priority;
+  }
 
   set setPriority(priority) {
-    this.priorirty = priority;
+    this.priority = priority;
   }
 
   set setDescription(description) {

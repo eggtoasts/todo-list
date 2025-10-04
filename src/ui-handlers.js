@@ -229,7 +229,7 @@ export const taskUIHandler = function () {
     trashIcon.textContent = "delete";
     taskDescription.textContent = description;
     calendarIcon.textContent = "date_range";
-    dateText.textContent = dueDate;
+    dateText.textContent = task.dueDateParser();
 
     //Append it to its respective div parents
     taskContainer.appendChild(taskItem);
@@ -287,22 +287,25 @@ export const taskUIHandler = function () {
         date = arr[5],
         priority = arr[6];
 
-      console.log(newEditTaskItem);
       //Add it to the current container
       currTaskItem.appendChild(newEditTaskItem);
 
       //If user presses submit, we edit the current item
       // then simply render the page again.
       submit.addEventListener("click", (e) => {
-        console.log("found ");
-        console.log(currTodo);
-
         //Set the new item w/ the input
         currTodo.setTitle = title.value;
         currTodo.setDescription = desc.value;
         currTodo.setDate = date.value;
         currTodo.setPriority = priority.value;
 
+        updateTasksUI(project);
+      });
+
+      //If user presses cancel,
+      //simply render page.
+
+      cancel.addEventListener("click", (e) => {
         updateTasksUI(project);
       });
 
@@ -354,7 +357,7 @@ export const taskUIHandler = function () {
     priorityColorNone.setAttribute("value", "none");
     priorityColorLow.setAttribute("value", "priority-color-low");
     priorityColorMedium.setAttribute("value", "priority-color-medium");
-    priorityColorHigh.setAttribute("value", "priority-color-high");
+    priorityColorHigh.setAttribute("value", `priority-color-high `);
 
     priorityColorNone.textContent = "None";
     priorityColorLow.textContent = "Low";
@@ -372,8 +375,21 @@ export const taskUIHandler = function () {
     //Retain original values
     editTitle.value = currTodo.getTitle;
     editDescription.value = currTodo.getDescription;
-    editTaskPriorityWrapper.value = currTodo.getPriority;
     editDate.value = currTodo.getDate;
+
+    switch (currTodo.getPriority) {
+      case "priority-color-low":
+        priorityColorLow.setAttribute("selected", "");
+        break;
+
+      case "priority-color-medium":
+        priorityColorMedium.setAttribute("selected", "");
+        break;
+
+      case "priority-color-high":
+        priorityColorHigh.setAttribute("selected", "");
+        break;
+    }
 
     //Now add them all together ~~
 
