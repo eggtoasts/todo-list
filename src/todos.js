@@ -1,4 +1,4 @@
-import { compareAsc, format, eo } from "date-fns";
+import { compareAsc, format, eo, parseISO } from "date-fns";
 
 export class Todos {
   constructor(title, description, dueDate, priority, checked, id) {
@@ -11,14 +11,11 @@ export class Todos {
   }
 
   dueDateParser() {
-    const date = new Date(this.dueDate);
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    };
+    const date = new Date(parseISO(this.dueDate));
 
-    const formattedDate = date.toLocaleDateString("en-US", options);
+    console.log(date);
+
+    const formattedDate = format(date, "MMM dd, yyyy");
 
     return formattedDate;
   }
