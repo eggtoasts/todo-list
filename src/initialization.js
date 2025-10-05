@@ -1,6 +1,7 @@
 import { Proj } from "./projects-model.js";
 import { Project } from "./project.js";
 import { Todos } from "./todos.js";
+import { format } from "date-fns";
 
 export const initializeDefault = function () {
   const task = new Todos(
@@ -22,7 +23,7 @@ export const initializeDefault = function () {
   const task3 = new Todos(
     "Go to publix",
     "Buy the buffalo sauce chicken sub",
-    "2025-10-01",
+    format(new Date(), "yyyy-MM-dd"),
     "priority-color-high",
     0
   );

@@ -361,10 +361,7 @@ export const taskUIHandler = function (updateProjectsCallback) {
       button.addEventListener("click", (e) => {
         project.deleteTodo(task);
 
-        if (type === "all") updateAllTasksUI(Proj);
-        else if (type === "today") updateTodayTasksUI(Proj);
-        else if (type === "overdue") updateOverdueTasksUI(Proj);
-        else updateTasksUI(project);
+        updateTaskUI(type);
       })
     );
   }
@@ -463,6 +460,18 @@ export const taskUIHandler = function (updateProjectsCallback) {
     return taskItem;
   }
 
+  function updateTaskUI(type) {
+    if (type === "all") {
+      updateAllTasksUI(Proj);
+    } else if (type === "today)") {
+      updateTodayTasksUI(Proj);
+    } else if (type === "overdue") {
+      updateOverdueTasksUI(Proj);
+    } else {
+      updateTasksUI(project);
+    }
+  }
+
   const editTaskEventAdder = function (
     taskEditButton,
     taskItem,
@@ -474,10 +483,7 @@ export const taskUIHandler = function (updateProjectsCallback) {
       const checkTaskEditExist = document.querySelector(".edit-task-container");
       if (checkTaskEditExist !== null) {
         //Render page so that will dissapear.
-        if (type === "all") updateAllTasksUI(Proj);
-        else if (type === "today") updateTodayTasksUI(Proj);
-        else if (type === "overdue") updateOverdueTasksUI(Proj);
-        else updateTasksUI(project);
+        updateTaskUI(type);
       }
 
       //Get the task id from DOM
@@ -512,20 +518,13 @@ export const taskUIHandler = function (updateProjectsCallback) {
         currTodo.setDate = date.value;
         currTodo.setPriority = priority.value;
 
-        if (type === "all") updateAllTasksUI(Proj);
-        else if (type === "today") updateTodayTasksUI(Proj);
-        else if (type === "overdue") updateOverdueTasksUI(Proj);
-        else updateTasksUI(project);
+        updateTaskUI(type);
       });
 
       //If user presses cancel,
       //simply render page.
-
       cancel.addEventListener("click", (e) => {
-        if (type === "all") updateAllTasksUI(Proj);
-        else if (type === "today") updateTodayTasksUI(Proj);
-        else if (type === "overdue") updateOverdueTasksUI(Proj);
-        else updateTasksUI(project);
+        updateTaskUI(type);
       });
     });
   };

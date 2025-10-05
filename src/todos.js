@@ -1,4 +1,4 @@
-import { compareAsc, format, eo, parseISO } from "date-fns";
+import { compareAsc, format, eo, parseISO, isPast, isToday } from "date-fns";
 
 export class Todos {
   constructor(title, description, dueDate, priority, checked, id) {
@@ -13,11 +13,23 @@ export class Todos {
   dueDateParser() {
     const date = new Date(parseISO(this.dueDate));
 
-    console.log(date);
-
     const formattedDate = format(date, "MMM dd, yyyy");
 
     return formattedDate;
+  }
+
+  checker() {
+    if (isToday(date)) {
+    }
+  }
+
+  changeDueColors() {
+    const date = new Date(parseISO(this.dueDate));
+    if (isToday(date)) {
+      return ".today";
+    } else if (isPast(date)) {
+      return ".past";
+    }
   }
 
   get getTitle() {

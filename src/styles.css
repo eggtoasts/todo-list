@@ -64,9 +64,9 @@ body {
   overflow: hidden;
 }
 
-/* div {
+div {
   border: 0.2px solid rgba(255, 0, 0, 0.263);
-} */
+}
 
 .icon {
   font-family: "Material Icons Outlined", "Material Icons";
@@ -397,6 +397,14 @@ button {
   font-size: 13px;
 }
 
+.checkmark.none .icon {
+  display: none;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  font-size: 13px;
+}
+
 .checkmark:hover .icon {
   display: block;
 }
@@ -606,6 +614,16 @@ button:focus {
 
 .edit-task-container:focus-within {
   border: 1.5px solid #b8b8b8;
+}
+
+/* date colors */
+
+.today {
+  color: #09a633;
+}
+
+.past {
+  color: #ff3d2a;
 }
 
 /* priority colors */
