@@ -18,20 +18,6 @@ export class Todos {
     return formattedDate;
   }
 
-  checker() {
-    if (isToday(date)) {
-    }
-  }
-
-  changeDueColors() {
-    const date = new Date(parseISO(this.dueDate));
-    if (isToday(date)) {
-      return ".today";
-    } else if (isPast(date)) {
-      return ".past";
-    }
-  }
-
   get getTitle() {
     return this.title;
   }

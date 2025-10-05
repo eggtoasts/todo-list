@@ -1,6 +1,6 @@
 import { Proj } from "./projects-model.js";
 import { Project } from "./project.js";
-import { isToday, isPast } from "date-fns";
+import { isToday, isPast, isYesterday } from "date-fns";
 
 //DOM stuff
 
@@ -300,7 +300,10 @@ export const taskUIHandler = function (updateProjectsCallback) {
       const todosArray = proj.getTodosArray;
 
       todosArray.forEach((todo) => {
-        if (isPast(todo.dueDateParser(todo.getDate)) === true) {
+        if (
+          isPast(todo.dueDateParser(todo.getDate)) === true &&
+          !isToday(todo.dueDateParser(todo.getDate))
+        ) {
           const newTask = createTask(todo, proj, "overdue");
         }
       });
@@ -420,8 +423,30 @@ export const taskUIHandler = function (updateProjectsCallback) {
     editIcon.textContent = "edit_note";
     trashIcon.textContent = "delete";
     taskDescription.textContent = description;
+
+    //No padding for no text input
+    if (description == "") {
+      taskDescription.setAttribute("class", ".task-description-none");
+    }
     calendarIcon.textContent = "date_range";
     dateText.textContent = task.dueDateParser();
+
+    // Add styling to dateText depending on the date
+    if (isToday(task.dueDateParser())) {
+      dateText.setAttribute("class", "task-date-text today");
+      dateText.textContent = "Today";
+      calendarIcon.setAttribute("class", "icon today");
+    } else if (isYesterday(task.dueDateParser())) {
+      dateText.setAttribute("class", "task-date-text yesterday");
+      dateText.textContent = "Yesterday";
+      calendarIcon.setAttribute("class", "icon yesterday");
+    } else if (
+      isPast(task.dueDateParser(task.getDate)) === true &&
+      !isToday(task.dueDateParser(task.getDate))
+    ) {
+      dateText.setAttribute("class", "task-date-text past");
+      calendarIcon.setAttribute("class", "icon past");
+    }
 
     //Append it to its respective div parents
     taskContainer.appendChild(taskItem);
@@ -460,7 +485,7 @@ export const taskUIHandler = function (updateProjectsCallback) {
     return taskItem;
   }
 
-  function updateTaskUI(type) {
+  function updateTaskUI(type, project) {
     if (type === "all") {
       updateAllTasksUI(Proj);
     } else if (type === "today)") {
@@ -483,7 +508,7 @@ export const taskUIHandler = function (updateProjectsCallback) {
       const checkTaskEditExist = document.querySelector(".edit-task-container");
       if (checkTaskEditExist !== null) {
         //Render page so that will dissapear.
-        updateTaskUI(type);
+        updateTaskUI(type, project);
       }
 
       //Get the task id from DOM
@@ -518,13 +543,13 @@ export const taskUIHandler = function (updateProjectsCallback) {
         currTodo.setDate = date.value;
         currTodo.setPriority = priority.value;
 
-        updateTaskUI(type);
+        updateTaskUI(type, project);
       });
 
       //If user presses cancel,
       //simply render page.
       cancel.addEventListener("click", (e) => {
-        updateTaskUI(type);
+        updateTaskUI(type, project);
       });
     });
   };
