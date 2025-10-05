@@ -27,6 +27,22 @@ export const initializeDefault = function () {
     0
   );
 
+  const task4 = new Todos(
+    "Add a task!",
+    "olorum soluta pariatur itaque eligendi nobis praesentium iure tempore. Voluptatem!",
+    "2025-10-04",
+    "priority-color-high",
+    0
+  );
+
+  const task5 = new Todos(
+    "Add a task!",
+    "olorum soluta pariatur itaque eligendi nobis praesentium iure tempore. Voluptatem!",
+    "2025-10-10",
+    "priority-color-high",
+    0
+  );
+
   const defaultProject = new Project("Default Project 🏠", "Blue", [], 1);
   const secondProject = new Project("Second Project 🌟", "Blue", [], 2);
   Proj.addProject(defaultProject);
@@ -34,7 +50,8 @@ export const initializeDefault = function () {
   defaultProject.addTodo(task);
   defaultProject.addTodo(task2);
   defaultProject.addTodo(task3);
-  secondProject.addTodo(task3);
+  secondProject.addTodo(task4);
+  secondProject.addTodo(task5);
 
   console.log(defaultProject.getTodosArray);
 

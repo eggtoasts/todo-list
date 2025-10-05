@@ -1,11 +1,32 @@
 import { Todos } from "./todos.js";
-import { Proj } from "./projects-model.js";
+import { Proj, Projects } from "./projects-model.js";
 import { projectUIHandler, dialogUIHandler } from "./ui-handlers.js";
 import { Project } from "./project.js";
 
 export const eventHandling = (function () {
-  const { renderPage, updateProjectsUI, displayProjectFormSidebarItem } =
-    projectUIHandler();
+  const {
+    renderAllTaskPage,
+    renderTodayTasks,
+    renderOverdueTasks,
+    renderPage,
+    updateProjectsUI,
+    displayProjectFormSidebarItem,
+  } = projectUIHandler();
+
+  //For different pages
+  const todayPage = document.querySelector(".today-page");
+  const allTaskPage = document.querySelector(".all-tasks-page");
+  const overduePage = document.querySelector(".overdue-page");
+
+  todayPage.addEventListener("click", (e) => {
+    renderTodayTasks(Proj);
+  });
+  allTaskPage.addEventListener("click", (e) => {
+    renderAllTaskPage(Proj);
+  });
+  overduePage.addEventListener("click", (e) => {
+    renderOverdueTasks(Proj);
+  });
 
   //Event handling for adding tasks
   const addTaskButton = document.querySelector(".add-task");

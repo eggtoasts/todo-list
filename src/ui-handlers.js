@@ -1,5 +1,6 @@
 import { Proj } from "./projects-model.js";
 import { Project } from "./project.js";
+import { isToday, isFuture } from "date-fns";
 
 //DOM stuff
 
@@ -26,8 +27,30 @@ export let pageUIHandler = function (updateProjectsCallback) {
     projectTitle.textContent = currentProject.getName;
   }
 
-  return { renderPage };
+  function renderAllTaskPage(proj) {
+    projectTitle.textContent = "All Tasks!";
+    taskUI.updateAllTasksUI(proj);
+  }
+
+  function renderTodayTasks(proj) {
+    projectTitle.textContent = "Today";
+    taskUI.updateTodayTasksUI(proj);
+  }
+
+  function renderOverdueTasks(proj) {
+    projectTitle.textContent = "Overdue";
+    taskUI.updateOverdueTasksUI(proj);
+  }
+
+  return {
+    renderPage,
+    renderAllTaskPage,
+    renderTodayTasks,
+    renderOverdueTasks,
+  };
 };
+
+export const allTasksHandler = function () {};
 
 export const projectUIHandler = function () {
   const projectContainer = document.querySelector(".projects-container");
@@ -242,13 +265,21 @@ export const projectUIHandler = function () {
   };
 
   //Destructures renderPage from pageUI
-  const { renderPage } = pageUI;
+  const {
+    renderPage,
+    renderAllTaskPage,
+    renderTodayTasks,
+    renderOverdueTasks,
+  } = pageUI;
 
   return {
     updateProjectsUI,
     renderPage,
+    renderAllTaskPage,
     displayProjectFormSidebarItem,
     pageUI,
+    renderTodayTasks,
+    renderOverdueTasks,
   };
 };
 
@@ -262,19 +293,87 @@ export const taskUIHandler = function (updateProjectsCallback) {
     clear(taskChild, taskContainer);
   }
 
-  function deleteTaskEventAdder(taskDelete, task, project) {
-    taskDelete.addEventListener("click", (e) => {
-      project.deleteTodo(task);
+  function updateOverdueTasksUI(Proj) {
+    clearTaskUI(taskContainer);
 
-      updateTasksUI(project);
-    });
+    for (const proj of Proj.getProjectsArray()) {
+      const todosArray = proj.getTodosArray;
+
+      todosArray.forEach((todo) => {
+        if (isFuture(todo.dueDateParser(todo.getDate)) === true) {
+          const newTask = createTask(todo, proj, "overdue");
+        }
+      });
+    }
+    if (updateProjectsCallback) {
+      updateProjectsCallback();
+    }
+  }
+
+  function updateTodayTasksUI(Proj) {
+    clearTaskUI(taskContainer);
+
+    for (const proj of Proj.getProjectsArray()) {
+      const todosArray = proj.getTodosArray;
+
+      todosArray.forEach((todo) => {
+        if (isToday(todo.dueDateParser(todo.getDate)) === true) {
+          const newTask = createTask(todo, proj, "today");
+        }
+      });
+    }
+    if (updateProjectsCallback) {
+      updateProjectsCallback();
+    }
+  }
+
+  function updateAllTasksUI(Proj) {
+    clearTaskUI(taskContainer);
+
+    //add it all:3
+
+    for (const proj of Proj.getProjectsArray()) {
+      const todosArray = proj.getTodosArray;
+
+      todosArray.forEach((todo) => {
+        const newTask = createTask(todo, proj, "all");
+
+        //Add newly created task to DOM
+        addTaskItem(newTask);
+      });
+    }
+
+    if (updateProjectsCallback) {
+      //If we updateTasksUi, the number of tasks will change
+      //So we display that in project sidebar as well
+      updateProjectsCallback();
+    }
+  }
+
+  function deleteTaskEventAdder(
+    taskDelete,
+    checkmarkCircle,
+    task,
+    project,
+    type
+  ) {
+    [checkmarkCircle, taskDelete].forEach((button) =>
+      button.addEventListener("click", (e) => {
+        project.deleteTodo(task);
+
+        if (type === "all") updateAllTasksUI(Proj);
+        else if (type === "today") updateTodayTasksUI(Proj);
+        else if (type === "overdue") updateOverdueTasksUI(Proj);
+        else updateTasksUI(project);
+      })
+    );
   }
 
   let addTaskItem = function (taskItem) {
     taskContainer.appendChild(taskItem);
   };
 
-  function createTask(task, project) {
+  function createTask(task, project, type) {
     const title = task.getTitle;
     const description = task.getDescription;
     const dueDate = task.getDate;
@@ -344,8 +443,13 @@ export const taskUIHandler = function (updateProjectsCallback) {
     taskDeleteSelector.appendChild(trashIcon);
 
     //Add ability to delete itself
-    deleteTaskEventAdder(taskDeleteSelector, task, project);
-
+    deleteTaskEventAdder(
+      taskDeleteSelector,
+      checkmarkCircle,
+      task,
+      project,
+      type
+    );
     taskTextsSelector.appendChild(taskDescription);
 
     const taskContainerSelector = taskTextsSelector.appendChild(taskDate);
@@ -354,18 +458,26 @@ export const taskUIHandler = function (updateProjectsCallback) {
     taskContainerSelector.appendChild(dateText);
 
     //Add Ability to edit itself
-    editTaskEventAdder(taskEditSelector, taskItem, project);
+    editTaskEventAdder(taskEditSelector, taskItem, project, type);
 
     return taskItem;
   }
 
-  const editTaskEventAdder = function (taskEditButton, taskItem, project) {
+  const editTaskEventAdder = function (
+    taskEditButton,
+    taskItem,
+    project,
+    type
+  ) {
     taskEditButton.addEventListener("click", (e) => {
       //Check if another form exists
       const checkTaskEditExist = document.querySelector(".edit-task-container");
       if (checkTaskEditExist !== null) {
         //Render page so that will dissapear.
-        updateTasksUI(project);
+        if (type === "all") updateAllTasksUI(Proj);
+        else if (type === "today") updateTodayTasksUI(Proj);
+        else if (type === "overdue") updateOverdueTasksUI(Proj);
+        else updateTasksUI(project);
       }
 
       //Get the task id from DOM
@@ -400,14 +512,20 @@ export const taskUIHandler = function (updateProjectsCallback) {
         currTodo.setDate = date.value;
         currTodo.setPriority = priority.value;
 
-        updateTasksUI(project);
+        if (type === "all") updateAllTasksUI(Proj);
+        else if (type === "today") updateTodayTasksUI(Proj);
+        else if (type === "overdue") updateOverdueTasksUI(Proj);
+        else updateTasksUI(project);
       });
 
       //If user presses cancel,
       //simply render page.
 
       cancel.addEventListener("click", (e) => {
-        updateTasksUI(project);
+        if (type === "all") updateAllTasksUI(Proj);
+        else if (type === "today") updateTodayTasksUI(Proj);
+        else if (type === "overdue") updateOverdueTasksUI(Proj);
+        else updateTasksUI(project);
       });
     });
   };
@@ -536,7 +654,12 @@ export const taskUIHandler = function (updateProjectsCallback) {
     }
   }
 
-  return { updateTasksUI };
+  return {
+    updateTasksUI,
+    updateAllTasksUI,
+    updateTodayTasksUI,
+    updateOverdueTasksUI,
+  };
 };
 
 export const dialogUIHandler = function () {

@@ -5,6 +5,15 @@ export function Projects() {
     return projectsArray;
   };
 
+  let countAllProjects = function () {
+    let count = 0;
+    for (let proj of projectsArray) {
+      count += proj.getTodosSize();
+    }
+
+    return count;
+  };
+
   let addProject = function (project_obj) {
     projectsArray.push(project_obj);
   };
@@ -15,7 +24,13 @@ export function Projects() {
     return currentProject;
   };
 
-  return { projectsArray, getProjectsArray, addProject, findProjectById };
+  return {
+    projectsArray,
+    getProjectsArray,
+    addProject,
+    findProjectById,
+    countAllProjects,
+  };
 }
 
 export const Proj = Projects();
