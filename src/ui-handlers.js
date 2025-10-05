@@ -73,6 +73,7 @@ export const projectUIHandler = function () {
     icon.setAttribute("class", "icon");
     projectForm.setAttribute("class", "sidebar-form");
 
+    //If this is a existing project we're editing, we add its id onto it.
     if (id) {
       projectItem.setAttribute("id", id);
     }

@@ -21,7 +21,7 @@ export const eventHandling = (function () {
   const addTaskTitle = document.getElementById("add-task-dialog-title");
   const addTaskProjects = document.getElementById("add-task-dialog-projects");
   const addTaskDate = document.getElementById("add-task-dialog-date");
-
+  const addTaskForm = document.querySelector(".add-task-dialog-content");
   //Event handling for Projects
   const addProjectButton = document.querySelector(".add-projects");
   addProjectButton.addEventListener("click", (e) => {
@@ -40,7 +40,7 @@ export const eventHandling = (function () {
     addTaskDialog.showModal();
   });
 
-  addTaskSubmit.addEventListener("click", (e) => {
+  addTaskForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
     const projectTo = Proj.findProjectById(addTaskProjects.value);
@@ -52,11 +52,18 @@ export const eventHandling = (function () {
       0
     );
 
+    //Create task item and add it to the inputted project array.
     projectTo.addTodo(newTask);
 
     renderPage(projectTo);
 
-    //Create task item and add it to the inputted project array.
+    //Clear its contents
+    addTaskDialog.close();
+
+    addTaskTitle.value = "";
+    addTaskDescription.value = "";
+    addTaskDate.value = "";
+    addTaskPriority.value = "none";
   });
 
   addTaskCancel.addEventListener("click", (e) => {
