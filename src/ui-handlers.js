@@ -285,6 +285,7 @@ export const taskUIHandler = function (updateProjectsCallback) {
     const taskItem = document.createElement("div");
     const taskTexts = document.createElement("div");
     const checkmark = document.createElement("button");
+    const checkmarkIcon = document.createElement("span");
     const taskHeader = document.createElement("div");
     const taskTitle = document.createElement("div");
 
@@ -305,6 +306,7 @@ export const taskUIHandler = function (updateProjectsCallback) {
     taskItem.setAttribute("class", "task-item");
     taskTexts.setAttribute("class", "task-texts");
     checkmark.setAttribute("class", `checkmark ${priority}`);
+    checkmarkIcon.setAttribute("class", `icon ${priority}`);
     taskHeader.setAttribute("class", "task-header");
     taskTitle.setAttribute("class", "task-title");
     taskEdit.setAttribute("class", "task-edit");
@@ -317,7 +319,7 @@ export const taskUIHandler = function (updateProjectsCallback) {
     dateText.setAttribute("class", "task-date-text");
 
     //Set all text to is corresponding elements
-
+    checkmarkIcon.textContent = "check";
     taskTitle.textContent = title;
     editIcon.textContent = "edit_note";
     trashIcon.textContent = "delete";
@@ -328,8 +330,8 @@ export const taskUIHandler = function (updateProjectsCallback) {
     //Append it to its respective div parents
     taskContainer.appendChild(taskItem);
 
-    taskItem.appendChild(checkmark);
-
+    const checkmarkCircle = taskItem.appendChild(checkmark);
+    checkmarkCircle.appendChild(checkmarkIcon);
     const taskTextsSelector = taskItem.appendChild(taskTexts);
 
     const taskHeaderSelector = taskTextsSelector.appendChild(taskHeader);
@@ -407,13 +409,6 @@ export const taskUIHandler = function (updateProjectsCallback) {
       cancel.addEventListener("click", (e) => {
         updateTasksUI(project);
       });
-
-      //If the user exits out of the edit container
-      // (This happens by):
-      // 1) Clicking another page
-      // 2) Trying to edit ANOTHER task
-
-      // Clicking anywhere else shouldn't close the edit window
     });
   };
 

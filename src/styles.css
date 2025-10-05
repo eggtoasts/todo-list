@@ -386,6 +386,19 @@ button {
   border-radius: 100px;
 
   border: 1.3px solid grey;
+  position: relative;
+}
+
+.checkmark .icon {
+  display: none;
+  position: absolute;
+  right: 1.7px;
+  top: 1.9px;
+  font-size: 13px;
+}
+
+.checkmark:hover .icon {
+  display: block;
 }
 
 /* DIALOG */
@@ -596,18 +609,32 @@ button:focus {
 }
 
 /* priority colors */
-
 .priority-color-low {
+  border: none;
+  color: var(--blue);
+}
+
+.priority-color-medium {
+  border: none;
+  color: var(--orange);
+}
+
+.priority-color-high {
+  border: none;
+  color: var(--red);
+}
+
+.priority-color-low:not(.icon) {
   border: 2px solid var(--blue);
   background-color: var(--light_blue);
 }
 
-.priority-color-medium {
+.priority-color-medium:not(.icon) {
   border: 2px solid var(--orange);
   background-color: var(--light_orange);
 }
 
-.priority-color-high {
+.priority-color-high:not(.icon) {
   border: 2px solid var(--red);
   background-color: var(--light_red);
 }
