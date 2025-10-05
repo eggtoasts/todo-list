@@ -20,21 +20,18 @@ export class Todos {
 
   checkIfTodoYesterday() {
     const date = new Date(parseISO(this.dueDate));
-    console.log(date);
     if (isYesterday(date) === true) return true;
     return false;
   }
 
   checkIfTodoToday() {
     const date = new Date(parseISO(this.dueDate));
-    console.log(date);
     if (isToday(date) === true) return true;
     return false;
   }
 
   checkIfTodoOverdue() {
     const date = new Date(parseISO(this.dueDate));
-    console.log(date);
     if (isPast(date) === true && isToday(date) !== true) return true;
     return false;
   }

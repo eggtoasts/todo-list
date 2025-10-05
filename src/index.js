@@ -13,7 +13,9 @@ const main = function () {
 
   //Deals with UI
   const mainUI = UserInterface(currentSelectedProject);
-  mainUI.updateProjectUI();
+
+  //not needed we do it in updateUI
+  // mainUI.updateProjectUI();
 };
 
 main();

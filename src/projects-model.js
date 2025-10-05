@@ -36,6 +36,10 @@ export function Projects() {
     projectsArray.push(project_obj);
   };
 
+  let deleteProject = function (projectId) {
+    projectsArray = projectsArray.filter((e) => projectId !== e.getId);
+  };
+
   let findProjectById = function (projectId) {
     const currentProject = getProjectsArray().find((e) => e.id === projectId);
 
@@ -50,6 +54,7 @@ export function Projects() {
     countAllProjects,
     countAllTodays,
     countAllOverdues,
+    deleteProject,
   };
 }
 

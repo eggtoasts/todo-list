@@ -46,6 +46,14 @@
   padding-right: 10px;
 }
 
+.project-item .project-delete {
+  display: none;
+}
+
+.project-item:hover .project-delete {
+  display: inline-block;
+}
+
 .project-item:hover .right-option .number-of-tasks {
   display: none;
 }
@@ -60,7 +68,9 @@
 
 :root {
   --icon-color: #666666;
+  --darker-main-color: rgb(24, 64, 199);
   --main-color: rgb(46, 92, 244);
+  --lighter-main-color: #e5ecff;
 
   --sidebar-color: #f9f9f9;
   --on-project-color: #e5eaff;
@@ -121,6 +131,18 @@ body {
   grid-template-columns: 275px 1fr;
 
   overflow: auto;
+}
+
+.project-item.current,
+.sidebar-item.current {
+  color: var(--darker-main-color);
+  background-color: var(--lighter-main-color);
+}
+
+.sidebar-item.current p,
+.sidebar-item.current .icon,
+.project-item.current span:not(.project-delete) {
+  color: var(--darker-main-color);
 }
 
 .sidebar {
@@ -243,6 +265,7 @@ body {
 
 .project-cancel {
   color: var(--red);
+  margin-right: 5px;
 }
 
 .project-add {
@@ -270,16 +293,31 @@ button {
   border-radius: 5px;
 }
 
+.title-wrapper {
+  /* display: flex; */
+}
+
 .sidebar-lower,
 .sidebar-upper,
 .sidebar-footer {
   margin-left: var(--left-margin);
 }
 
-.sidebar-footer {
-  position: fixed;
-  bottom: 0;
+.project-delete {
+  color: white;
+  border-style: none;
+  background-color: var(--red);
+  font-size: 14px;
+  font-weight: lighter;
+  margin-right: 5px;
+  padding: 2px;
+}
 
+.sidebar-footer {
+  /* position: fixed;
+  bottom: 0; */
+  padding-top: 10px;
+  margin-top: auto;
   width: 275px;
   padding-bottom: 20px;
 }
@@ -657,7 +695,8 @@ button {
 button:hover {
   cursor: pointer;
 }
-.sidebar button:not(.project-form):hover {
+.project-item:not(.current):hover,
+.sidebar-item:not(.current):hover {
   background-color: var(--on-hover);
 }
 

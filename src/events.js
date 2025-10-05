@@ -57,11 +57,14 @@ export const eventHandling = (function () {
     if (width < 600) {
       mainContainer.setAttribute("id", "main-container-toggle");
       sidebar.setAttribute("id", "sidebar-toggle");
-      mainContent.setAttribute("id", "main-content-toggle");
+
+      if (sidebar.id === "showK")
+        mainContent.setAttribute("id", "main-content-toggle");
+      toggleSidebarButtonHeader.setAttribute("id", "show");
       return;
     }
-    mainContainer.removeAttribute("id", "one");
-    sidebar.removeAttribute("id", "hidden");
+    mainContainer.removeAttribute("id");
+    sidebar.removeAttribute("id");
     toggleSidebarButtonHeader.setAttribute("id", "show");
   });
 

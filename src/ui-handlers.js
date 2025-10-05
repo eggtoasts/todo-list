@@ -1,9 +1,7 @@
 import { Proj } from "./projects-model.js";
 import { Project } from "./project.js";
 
-//DOM stuff
-
-let uiHelpers = function () {
+const uiHelpers = function () {
   function clear(taskChild, container) {
     while (taskChild != null) {
       container.removeChild(taskChild);
@@ -11,33 +9,57 @@ let uiHelpers = function () {
     }
   }
 
-  return { clear };
+  const otherPages = document.querySelectorAll(".sidebar-item");
+  function highlightSidebarItem(activePage) {
+    otherPages.forEach((page) => page.classList.remove("current"));
+
+    activePage.classList.add("current");
+  }
+
+  return { clear, highlightSidebarItem };
 };
 
 export let pageUIHandler = function (updateProjectsCallback) {
   const projectTitle = document.querySelector(".project-title");
+  const overduePage = document.querySelector(".overdue-page");
+  const todayPage = document.querySelector(".today-page");
+  const allTasksPage = document.querySelector(".all-tasks-page");
 
   //We're passing updateProjectsUI to taskUIHandler
   const taskUI = taskUIHandler(updateProjectsCallback);
+  const { highlightSidebarItem } = uiHelpers();
 
   function renderPage(currentProject) {
+    if (currentProject === "delete") {
+      renderAllTaskPage(Proj);
+      return;
+    }
     taskUI.updateTasksUI(currentProject);
+
+    const projElement = document.getElementById(currentProject.getId);
+    highlightSidebarItem(projElement);
 
     projectTitle.textContent = currentProject.getName;
   }
 
   function renderAllTaskPage(proj) {
     projectTitle.textContent = "All Tasks!";
+
+    highlightSidebarItem(allTasksPage);
+
     taskUI.updateAllTasksUI(proj);
   }
 
   function renderTodayTasks(proj) {
     projectTitle.textContent = "Today";
+    highlightSidebarItem(todayPage);
+
     taskUI.updateTodayTasksUI(proj);
   }
 
   function renderOverdueTasks(proj) {
     projectTitle.textContent = "Overdue";
+    highlightSidebarItem(overduePage);
     taskUI.updateOverdueTasksUI(proj);
   }
 
@@ -99,6 +121,8 @@ export const projectUIHandler = function () {
     const option = document.createElement("div");
     const projectCancel = document.createElement("span");
 
+    const deleteIcon = document.createElement("div");
+
     projectItem.setAttribute("class", "project-item project-form");
     icon.setAttribute("class", "icon");
     projectForm.setAttribute("class", "sidebar-form");
@@ -141,7 +165,10 @@ export const projectUIHandler = function () {
       if (e.target.className === "icon project-cancel") {
         //If this is a existing project, re-render page
         if (id) {
+          const currentProject = Proj.findProjectById(id);
+
           updateProjectsUI(Proj);
+          renderPage(currentProject);
         }
 
         //If this was from the (+) button, then just remove it from DOM
@@ -149,6 +176,7 @@ export const projectUIHandler = function () {
       }
     });
   }
+  const { highlightSidebarItem } = uiHelpers();
 
   function sidebarAdditionEvent(projectItem, id) {
     projectItem.addEventListener("keypress", (e) => {
@@ -161,9 +189,11 @@ export const projectUIHandler = function () {
           currentProject.setName = document.getElementById(
             "sidebar-project-name"
           ).value;
-          renderPage(currentProject);
+
           updateProjectsUI(Proj);
           updateDialogUI(Proj);
+
+          renderPage(currentProject);
         } else {
           //If not, add it.
 
@@ -179,6 +209,7 @@ export const projectUIHandler = function () {
           Proj.addProject(newProject);
           updateProjectsUI(Proj);
           updateDialogUI(Proj);
+          renderPage(newProject);
         }
       }
     });
@@ -194,8 +225,11 @@ export const projectUIHandler = function () {
       //when we click on a project tab,
       //we render its page.
 
-      //If user is pressing the edit symbol instead, do nothing.
-      if (e.target.className.includes("edit")) {
+      //If user is pressing the edit/deleting symbol instead, do nothing.
+      if (
+        e.target.className.includes("edit") ||
+        e.target.className.includes("delete")
+      ) {
         return;
       }
 
@@ -230,6 +264,9 @@ export const projectUIHandler = function () {
   };
 
   let createProjectItem = function (project) {
+    const deleteIcon = document.createElement("button");
+    deleteIcon.setAttribute("class", "icon project-delete");
+    deleteIcon.textContent = "delete";
     //project has name, color, id
     const name = project.getName;
 
@@ -258,9 +295,11 @@ export const projectUIHandler = function () {
     projectContainer.appendChild(projectItem);
     projectItem.appendChild(tag);
     projectItem.appendChild(projectTitle);
+
     const rightOption = projectItem.appendChild(editOption);
     rightOption.appendChild(editIcon);
     rightOption.appendChild(numberOfTasks);
+    projectItem.appendChild(deleteIcon);
 
     //Add event that renders the page whenever a project tab is clicked
     addProjectEvent(projectItem);
@@ -268,8 +307,24 @@ export const projectUIHandler = function () {
     //Add event that lets user edit a project's name, or delete it.
     addEditEvent(projectItem, editIcon, id);
 
+    //Delete a project.
+    addDeleteEvent(projectItem, deleteIcon, id);
+
     return projectItem;
   };
+
+  function addDeleteEvent(projectItem, deleteIcon, id) {
+    deleteIcon.addEventListener("click", (e) => {
+      if (Proj.getProjectsArray().length === 1) {
+        return;
+      }
+      Proj.deleteProject(id, Proj.projectsArray);
+
+      updateProjectsUI(Proj);
+      updateDialogUI(Proj);
+      renderPage("delete");
+    });
+  }
 
   //Destructures renderPage from pageUI
   const {
@@ -293,6 +348,7 @@ export const projectUIHandler = function () {
 export const taskUIHandler = function (updateProjectsCallback) {
   const taskContainer = document.querySelector(".task-container");
   const { clear } = uiHelpers();
+  const { highlightSidebarItem } = uiHelpers();
 
   function clearTaskUI(taskContainer) {
     let taskChild = taskContainer.lastElementChild;
@@ -489,12 +545,13 @@ export const taskUIHandler = function (updateProjectsCallback) {
   function updateTaskUI(type, project) {
     if (type === "all") {
       updateAllTasksUI(Proj);
-    } else if (type === "today)") {
+    } else if (type === "today") {
       updateTodayTasksUI(Proj);
     } else if (type === "overdue") {
       updateOverdueTasksUI(Proj);
     } else {
       updateTasksUI(project);
+      highlightSidebarItem(document.getElementById(project.id));
     }
   }
 
@@ -728,11 +785,11 @@ export const UserInterface = function (currentSelectedProject) {
   const { renderPage } = projectUI;
 
   //Updates UI of Project & Tasks
-  const updateProjectUI = () => projectUI.updateProjectsUI(Proj);
+  renderPage(currentSelectedProject);
 
   //Renders project and dialog UI to our current Project data
   projectUI.renderPage(currentSelectedProject);
   dialogUI.updateDialogUI(Proj);
 
-  return { updateProjectUI, renderPage };
+  return { renderPage };
 };
