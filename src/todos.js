@@ -1,4 +1,12 @@
-import { compareAsc, format, eo, parseISO, isPast, isToday } from "date-fns";
+import {
+  compareAsc,
+  format,
+  eo,
+  parseISO,
+  isPast,
+  isToday,
+  isYesterday,
+} from "date-fns";
 
 export class Todos {
   constructor(title, description, dueDate, priority, checked, id) {
@@ -8,6 +16,27 @@ export class Todos {
     this.priority = priority;
     this.checked = 0;
     this.id = crypto.randomUUID();
+  }
+
+  checkIfTodoYesterday() {
+    const date = new Date(parseISO(this.dueDate));
+    console.log(date);
+    if (isYesterday(date) === true) return true;
+    return false;
+  }
+
+  checkIfTodoToday() {
+    const date = new Date(parseISO(this.dueDate));
+    console.log(date);
+    if (isToday(date) === true) return true;
+    return false;
+  }
+
+  checkIfTodoOverdue() {
+    const date = new Date(parseISO(this.dueDate));
+    console.log(date);
+    if (isPast(date) === true && isToday(date) !== true) return true;
+    return false;
   }
 
   dueDateParser() {

@@ -28,6 +28,43 @@ export const eventHandling = (function () {
     renderOverdueTasks(Proj);
   });
 
+  //Event handling for toggling sidebar & handling smaller screens
+  const toggleSidebarButton = document.querySelector(".toggle-sidebar");
+  const mainContainer = document.querySelector(".main-container");
+  const sidebar = document.querySelector(".sidebar");
+  const mainContent = document.querySelector(".main-content");
+  const toggleSidebarButtonHeader = document.querySelector(
+    ".header-toggle-sidebar"
+  );
+
+  toggleSidebarButton.addEventListener("click", (e) => {
+    const width = window.innerWidth > 0 ? window.innerWidth : screen.width;
+
+    if (width < 600) {
+      mainContainer.removeAttribute("id");
+      sidebar.removeAttribute("id");
+      mainContent.removeAttribute("id");
+      return;
+    }
+
+    mainContainer.setAttribute("id", "one");
+    sidebar.setAttribute("id", "hidden");
+    toggleSidebarButtonHeader.setAttribute("id", "showK");
+  });
+
+  toggleSidebarButtonHeader.addEventListener("click", (e) => {
+    const width = window.innerWidth > 0 ? window.innerWidth : screen.width;
+    if (width < 600) {
+      mainContainer.setAttribute("id", "main-container-toggle");
+      sidebar.setAttribute("id", "sidebar-toggle");
+      mainContent.setAttribute("id", "main-content-toggle");
+      return;
+    }
+    mainContainer.removeAttribute("id", "one");
+    sidebar.removeAttribute("id", "hidden");
+    toggleSidebarButtonHeader.setAttribute("id", "show");
+  });
+
   //Event handling for adding tasks
   const addTaskButton = document.querySelector(".add-task");
   const addTaskDialog = document.querySelector(".add-task-dialog");

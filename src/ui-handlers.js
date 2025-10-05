@@ -1,6 +1,5 @@
 import { Proj } from "./projects-model.js";
 import { Project } from "./project.js";
-import { isToday, isPast, isYesterday } from "date-fns";
 
 //DOM stuff
 
@@ -54,11 +53,19 @@ export const allTasksHandler = function () {};
 
 export const projectUIHandler = function () {
   const projectContainer = document.querySelector(".projects-container");
+  const allTasksNumber = document.querySelector(".all-number-of-tasks");
+  const todayTasksNumber = document.querySelector(".today-number-of-tasks");
+  const overdueTasksNumber = document.querySelector(".overdue-number-of-tasks");
   const { updateDialogUI } = dialogUIHandler();
   const { clear } = uiHelpers();
 
   let updateProjectsUI = function () {
     clearProjectUI(projectContainer);
+
+    //Update all-tasks, today tasks, and overdue tasks
+    allTasksNumber.textContent = Proj.countAllProjects();
+    todayTasksNumber.textContent = Proj.countAllTodays();
+    overdueTasksNumber.textContent = Proj.countAllOverdues();
 
     //We go through every project in the Projects array.
     const projectsArray = Proj.getProjectsArray();
@@ -300,10 +307,7 @@ export const taskUIHandler = function (updateProjectsCallback) {
       const todosArray = proj.getTodosArray;
 
       todosArray.forEach((todo) => {
-        if (
-          isPast(todo.dueDateParser(todo.getDate)) === true &&
-          !isToday(todo.dueDateParser(todo.getDate))
-        ) {
+        if (todo.checkIfTodoOverdue() && !todo.checkIfTodoToday()) {
           const newTask = createTask(todo, proj, "overdue");
         }
       });
@@ -320,7 +324,7 @@ export const taskUIHandler = function (updateProjectsCallback) {
       const todosArray = proj.getTodosArray;
 
       todosArray.forEach((todo) => {
-        if (isToday(todo.dueDateParser(todo.getDate)) === true) {
+        if (todo.checkIfTodoToday()) {
           const newTask = createTask(todo, proj, "today");
         }
       });
@@ -364,7 +368,7 @@ export const taskUIHandler = function (updateProjectsCallback) {
       button.addEventListener("click", (e) => {
         project.deleteTodo(task);
 
-        updateTaskUI(type);
+        updateTaskUI(type, project);
       })
     );
   }
@@ -432,18 +436,15 @@ export const taskUIHandler = function (updateProjectsCallback) {
     dateText.textContent = task.dueDateParser();
 
     // Add styling to dateText depending on the date
-    if (isToday(task.dueDateParser())) {
+    if (task.checkIfTodoToday()) {
       dateText.setAttribute("class", "task-date-text today");
       dateText.textContent = "Today";
       calendarIcon.setAttribute("class", "icon today");
-    } else if (isYesterday(task.dueDateParser())) {
+    } else if (task.checkIfTodoYesterday()) {
       dateText.setAttribute("class", "task-date-text yesterday");
       dateText.textContent = "Yesterday";
       calendarIcon.setAttribute("class", "icon yesterday");
-    } else if (
-      isPast(task.dueDateParser(task.getDate)) === true &&
-      !isToday(task.dueDateParser(task.getDate))
-    ) {
+    } else if (task.checkIfTodoOverdue() && !task.checkIfTodoToday()) {
       dateText.setAttribute("class", "task-date-text past");
       calendarIcon.setAttribute("class", "icon past");
     }

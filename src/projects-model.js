@@ -5,6 +5,24 @@ export function Projects() {
     return projectsArray;
   };
 
+  let countAllTodays = function () {
+    let count = 0;
+    for (let proj of projectsArray) {
+      count += proj.getTodayTodos();
+    }
+
+    return count;
+  };
+
+  let countAllOverdues = function () {
+    let count = 0;
+    for (let proj of projectsArray) {
+      count += proj.getOverdueTodos();
+    }
+
+    return count;
+  };
+
   let countAllProjects = function () {
     let count = 0;
     for (let proj of projectsArray) {
@@ -30,6 +48,8 @@ export function Projects() {
     addProject,
     findProjectById,
     countAllProjects,
+    countAllTodays,
+    countAllOverdues,
   };
 }
 

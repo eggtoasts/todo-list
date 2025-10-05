@@ -7,6 +7,14 @@ export class Project {
     this.id = crypto.randomUUID();
   }
 
+  getTodayTodos() {
+    return this.todosArray.filter((todo) => todo.checkIfTodoToday()).length;
+  }
+
+  getOverdueTodos() {
+    return this.todosArray.filter((todo) => todo.checkIfTodoOverdue()).length;
+  }
+
   getTodosSize() {
     return this.todosArray.length;
   }

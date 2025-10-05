@@ -6,14 +6,14 @@
     <title>to-do list</title>
   </head>
   <body>
-    <div class="main-container" id="one">
-      <div class="sidebar" id="hidden">
+    <div class="main-container">
+      <div class="sidebar">
         <div class="sidebar-upper">
           <div class="sidebar-options">
             <span class="icon left">brush</span>
             <div class="sidebar-title">to-do list</div>
 
-            <button class="icon right">view_sidebar</button>
+            <button class="icon right toggle-sidebar">view_sidebar</button>
           </div>
           <button class="sidebar-item add-task">
             <div class="icon">add_circle</div>
@@ -24,15 +24,17 @@
             <div class="icon">arrow_back</div>
             <p>All Tasks</p>
 
-            <p class="number-of-tasks">0</p>
+            <p class="all-number-of-tasks">0</p>
           </button>
           <button class="sidebar-item today-page">
             <div class="icon">calendar_today</div>
             <p>Today</p>
+            <p class="today-number-of-tasks">0</p>
           </button>
           <button class="sidebar-item overdue-page">
             <div class="icon">calendar_month</div>
             <p>Overdue</p>
+            <p class="overdue-number-of-tasks">0</p>
           </button>
         </div>
 
@@ -95,7 +97,9 @@
         <!-- PROJECTS -->
 
         <div class="header">
-          <!-- <button class="night-mode">Night Mode</button> -->
+          <button class="icon right header-toggle-sidebar" id="show">
+            view_sidebar
+          </button>
         </div>
         <div class="project-title">Project Name 🌟</div>
 
