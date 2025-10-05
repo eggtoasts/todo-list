@@ -1,6 +1,6 @@
 import { Proj } from "./projects-model.js";
 import { Project } from "./project.js";
-import { isToday, isFuture } from "date-fns";
+import { isToday, isPast } from "date-fns";
 
 //DOM stuff
 
@@ -300,7 +300,7 @@ export const taskUIHandler = function (updateProjectsCallback) {
       const todosArray = proj.getTodosArray;
 
       todosArray.forEach((todo) => {
-        if (isFuture(todo.dueDateParser(todo.getDate)) === true) {
+        if (isPast(todo.dueDateParser(todo.getDate)) === true) {
           const newTask = createTask(todo, proj, "overdue");
         }
       });
