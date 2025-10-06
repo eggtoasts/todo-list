@@ -322,9 +322,6 @@ export const projectUIHandler = function () {
 
   function addDeleteEvent(projectItem, deleteIcon, id) {
     deleteIcon.addEventListener("click", (e) => {
-      if (Proj.getProjectsArray().length === 1) {
-        return;
-      }
       Proj.deleteProject(id, Proj.projectsArray);
       setStorage(Proj.getProjectsArray());
 
@@ -649,6 +646,7 @@ export const taskUIHandler = function (updateProjectsCallback) {
     editDescription.setAttribute("id", "edit-task-description");
     editTitle.setAttribute("type", "text");
     editTitle.setAttribute("placeholder", "Enter Title");
+    editTitle.setAttribute("maxLength", "100");
     editDescription.setAttribute("placeholder", "(Optional)");
 
     editTitle.setAttribute("placeholder", "Enter Title");

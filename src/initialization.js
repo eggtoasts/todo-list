@@ -6,25 +6,30 @@ import { format } from "date-fns";
 import { Storage } from "./storage";
 
 export const initializeDefault = function () {
+  //Uncomment for checks
   localStorage.clear();
+
   const checkLocalStorage = localStorage.getItem("projectsArray");
 
-  const { parser, stringer, setStorage } = Storage();
+  const { parser, setStorage } = Storage();
   console.log(checkLocalStorage);
 
   if (checkLocalStorage == null) {
+    const date1 = new Date();
+    date1.setDate(date1.getDate() + 1);
+
     const task = new Todos(
       "Drive to Pet Smart",
       "Buy food for the cats",
-      "2025-12-02",
-      "priority-color-low",
+      format(date1, "yyyy-MM-dd"),
+      "priority-color-high",
       0,
       crypto.randomUUID()
     );
 
     const task2 = new Todos(
-      "Finish Matrix HW",
-      "Time to lock in",
+      "Finish Matrix and Linear Eq. HW",
+      "Finish topics:\n\n- Chapter 10\n- Chapter 21\n- Chapter 27",
       "2025-10-01",
       "priority-color-medium",
       0,
@@ -32,18 +37,21 @@ export const initializeDefault = function () {
     );
 
     const task3 = new Todos(
-      "Go to publix",
-      "Buy the buffalo sauce chicken sub",
+      "Buy groceries at Publix",
+      "",
       format(new Date(), "yyyy-MM-dd"),
-      "priority-color-high",
+      "priority-color-low",
       0,
       crypto.randomUUID()
     );
 
+    const date4 = new Date();
+    date4.setDate(date4.getDate() - 1);
+
     const task4 = new Todos(
       "Buy Tickets",
       "",
-      "2025-10-04",
+      format(date4, "yyyy-MM-dd"),
       "priority-color-high",
       0,
       crypto.randomUUID()
@@ -89,7 +97,8 @@ export const initializeDefault = function () {
     Proj.setProjectsArray(projectsArrayFromLS);
     console.log(Proj.getProjectsArray());
 
-    const defaultProject = Proj.getProjectsArray()[0];
+    //Gets the first project or displays the "today" page.
+    const defaultProject = Proj.getProjectsArray()[0] || "delete";
 
     return { defaultProject };
   }

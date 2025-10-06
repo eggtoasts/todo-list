@@ -101,6 +101,14 @@ export const eventHandling = (function () {
   });
 
   addTaskButton.addEventListener("click", (e) => {
+    //User needs to have atleast 1 project in order to add in a task.
+    if (Proj.getProjectsArray().length === 0) {
+      const addProjectButtonSelector = document.querySelector(".project-form");
+      if (addProjectButtonSelector !== null) updateProjectsUI(Proj);
+      displayProjectFormSidebarItem();
+
+      return;
+    }
     addTaskDialog.showModal();
   });
 

@@ -164,6 +164,7 @@ body {
 .sidebar-options {
   padding-top: 20px;
   padding-bottom: 20px;
+
   height: 50px;
   display: flex;
   align-items: center;
@@ -313,15 +314,18 @@ button {
   padding: 2px;
 }
 
-.sidebar-footer {
-  /* position: fixed;
-  bottom: 0; */
-  padding-top: 10px;
+.sidebar-lower + div {
   margin-top: auto;
-  width: 275px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 
+.projects-container,
+.task-description,
+.sidebar,
+.main-container,
+.main-content {
+  overflow-x: hidden;
+}
 .projects-container {
   overflow: auto;
 }
@@ -390,7 +394,7 @@ button {
 }
 
 .project-title {
-  font-size: 24px;
+  font-size: clamp(1.2rem, 3.3vw, 1.5rem);
   font-weight: bold;
 
   padding-bottom: 15px;
@@ -847,5 +851,8 @@ button:focus {
     flex-direction: column;
     width: 80%;
     width: 150px;
+  }
+  .sidebar-footer {
+    display: none;
   }
 }

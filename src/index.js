@@ -2,13 +2,9 @@ import "./styles.css";
 import { initializeDefault } from "./initialization";
 import { eventHandling } from "./events";
 import { UserInterface } from "./ui-handlers";
-import { Storage } from "./storage";
 
 const main = function () {
-  //Check if we have something saved in storage API.
-  const storage = Storage();
-
-  //Initialize default project for display
+  //Initialize default project for display &  checks if we have something saved in storage API.
   const { defaultProject } = initializeDefault();
 
   console.log(defaultProject);
@@ -21,9 +17,6 @@ const main = function () {
 
   //Deals with UI
   const mainUI = UserInterface(currentSelectedProject);
-
-  //not needed we do it in updateUI
-  // mainUI.updateProjectUI();
 };
 
 main();
