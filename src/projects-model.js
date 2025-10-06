@@ -14,6 +14,10 @@ export function Projects() {
     return count;
   };
 
+  let setProjectsArray = function (newProjectsArray) {
+    projectsArray = newProjectsArray;
+  };
+
   let countAllOverdues = function () {
     let count = 0;
     for (let proj of projectsArray) {

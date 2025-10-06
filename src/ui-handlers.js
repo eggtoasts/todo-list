@@ -788,7 +788,7 @@ export const UserInterface = function (currentSelectedProject) {
   renderPage(currentSelectedProject);
 
   //Renders project and dialog UI to our current Project data
-  projectUI.renderPage(currentSelectedProject);
+  // projectUI.renderPage(currentSelectedProject);
   dialogUI.updateDialogUI(Proj);
 
   return { renderPage };
