@@ -1,10 +1,9 @@
 export class Project {
   //todo array is an array of todo item objects
-  constructor(name, color, id) {
+  constructor(name, todosArray, id) {
     this.name = name;
-    this.color = color;
     this.todosArray = [];
-    this.id = crypto.randomUUID();
+    this.id = id;
   }
 
   getTodayTodos() {

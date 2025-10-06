@@ -203,7 +203,7 @@ export const projectUIHandler = function () {
           ).value;
 
           //Now create that a project object, and add that into our Proj array
-          let newProject = new Project(projectTitle);
+          let newProject = new Project(projectTitle, [], crypto.randomUUID());
 
           //Update sidebar and dialog
           Proj.addProject(newProject);

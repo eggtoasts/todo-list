@@ -14,8 +14,8 @@ export class Todos {
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
-    this.checked = 0;
-    this.id = crypto.randomUUID();
+    this.checked = checked;
+    this.id = id;
   }
 
   checkIfTodoYesterday() {

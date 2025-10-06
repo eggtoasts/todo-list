@@ -9,7 +9,8 @@ export const initializeDefault = function () {
     "Buy food for the cats",
     "2025-12-02",
     "priority-color-low",
-    0
+    0,
+    crypto.randomUUID()
   );
 
   const task2 = new Todos(
@@ -17,7 +18,8 @@ export const initializeDefault = function () {
     "Time to lock in",
     "2025-10-01",
     "priority-color-medium",
-    0
+    0,
+    crypto.randomUUID()
   );
 
   const task3 = new Todos(
@@ -25,7 +27,8 @@ export const initializeDefault = function () {
     "Buy the buffalo sauce chicken sub",
     format(new Date(), "yyyy-MM-dd"),
     "priority-color-high",
-    0
+    0,
+    crypto.randomUUID()
   );
 
   const task4 = new Todos(
@@ -33,7 +36,8 @@ export const initializeDefault = function () {
     "",
     "2025-10-04",
     "priority-color-high",
-    0
+    0,
+    crypto.randomUUID()
   );
 
   const task5 = new Todos(
@@ -41,11 +45,16 @@ export const initializeDefault = function () {
     "",
     "2025-10-10",
     "priority-color-high",
-    0
+    0,
+    crypto.randomUUID()
   );
 
-  const defaultProject = new Project("Default Project 🏠", "Blue", [], 1);
-  const secondProject = new Project("School trip 🌟", "Blue", [], 2);
+  const defaultProject = new Project(
+    "Default Project 🏠",
+    [],
+    crypto.randomUUID()
+  );
+  const secondProject = new Project("School trip 🌟", [], crypto.randomUUID());
   Proj.addProject(defaultProject);
   Proj.addProject(secondProject);
   defaultProject.addTodo(task);

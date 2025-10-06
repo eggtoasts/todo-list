@@ -110,7 +110,8 @@ export const eventHandling = (function () {
       addTaskDescription.value,
       addTaskDate.value,
       addTaskPriority.value,
-      0
+      0,
+      crypto.randomUUID()
     );
 
     //Create task item and add it to the inputted project array.
