@@ -1,5 +1,8 @@
 import { Proj } from "./projects-model.js";
 import { Project } from "./project.js";
+import { Storage } from "./storage.js";
+
+const { parser, stringer, setStorage } = Storage();
 
 const uiHelpers = function () {
   function clear(taskChild, container) {
@@ -190,6 +193,8 @@ export const projectUIHandler = function () {
             "sidebar-project-name"
           ).value;
 
+          setStorage(Proj.getProjectsArray());
+
           updateProjectsUI(Proj);
           updateDialogUI(Proj);
 
@@ -204,9 +209,11 @@ export const projectUIHandler = function () {
 
           //Now create that a project object, and add that into our Proj array
           let newProject = new Project(projectTitle, [], crypto.randomUUID());
+          Proj.addProject(newProject);
+
+          setStorage(Proj.getProjectsArray());
 
           //Update sidebar and dialog
-          Proj.addProject(newProject);
           updateProjectsUI(Proj);
           updateDialogUI(Proj);
           renderPage(newProject);
@@ -319,6 +326,7 @@ export const projectUIHandler = function () {
         return;
       }
       Proj.deleteProject(id, Proj.projectsArray);
+      setStorage(Proj.getProjectsArray());
 
       updateProjectsUI(Proj);
       updateDialogUI(Proj);
@@ -423,6 +431,7 @@ export const taskUIHandler = function (updateProjectsCallback) {
     [checkmarkCircle, taskDelete].forEach((button) =>
       button.addEventListener("click", (e) => {
         project.deleteTodo(task);
+        setStorage(Proj.getProjectsArray());
 
         updateTaskUI(type, project);
       })
@@ -601,6 +610,8 @@ export const taskUIHandler = function (updateProjectsCallback) {
         currTodo.setDate = date.value;
         currTodo.setPriority = priority.value;
 
+        setStorage(Proj.getProjectsArray());
+
         updateTaskUI(type, project);
       });
 
@@ -771,6 +782,7 @@ export const dialogUIHandler = function () {
   }
 
   function updateDialogUI(allProjects) {
+    if (allProjects === "delete") return;
     clearUI(projectDropdown);
     createAllDialogs(allProjects);
   }
@@ -785,6 +797,7 @@ export const UserInterface = function (currentSelectedProject) {
   const { renderPage } = projectUI;
 
   //Updates UI of Project & Tasks
+  console.log(currentSelectedProject);
   renderPage(currentSelectedProject);
 
   //Renders project and dialog UI to our current Project data

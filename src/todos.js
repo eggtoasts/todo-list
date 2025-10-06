@@ -37,6 +37,13 @@ export class Todos {
   }
 
   dueDateParser() {
+    console.log(this.dueDate);
+    console.log(this.title);
+    console.log(this.description);
+    console.log(this.checked);
+    console.log(this.id);
+    console.log(this.priority);
+
     const date = new Date(parseISO(this.dueDate));
 
     const formattedDate = format(date, "MMM dd, yyyy");

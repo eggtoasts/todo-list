@@ -11,6 +11,8 @@ const main = function () {
   //Initialize default project for display
   const { defaultProject } = initializeDefault();
 
+  console.log(defaultProject);
+
   //If not, this will be our new array
   const currentSelectedProject = defaultProject;
 

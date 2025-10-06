@@ -2,7 +2,7 @@ export class Project {
   //todo array is an array of todo item objects
   constructor(name, todosArray, id) {
     this.name = name;
-    this.todosArray = [];
+    this.todosArray = todosArray || [];
     this.id = id;
   }
 

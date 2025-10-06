@@ -4,9 +4,11 @@ import { Todos } from "./todos";
 
 export function Storage() {
   let id = crypto.randomUUID();
+  let id2 = crypto.randomUUID();
 
   const testCase = Projects();
   testCase.addProject(new Project("Test", [], id));
+  testCase.addProject(new Project("Test2", [], id2));
   const tod = new Todos(
     "Test Todo 1",
     "",
@@ -27,35 +29,31 @@ export function Storage() {
 
     for (let proj of obj) {
       let parsedObj = JSON.parse(proj);
-      console.log(parsedObj);
 
       let todoArray = [];
 
       for (let todo of parsedObj.todosArray) {
-        let newTodo = new Todos(
+        const newTodo = new Todos(
           todo.title,
           todo.description,
-          todo.date,
+          todo.dueDate,
           todo.priority,
           todo.checked,
           todo.id
         );
-
-        todoArray.push(todoArray);
+        todoArray.push(newTodo);
       }
 
       let parsedProject = new Project(parsedObj.name, todoArray, parsedObj.id);
-
       newProjectsArray.push(parsedProject);
     }
+
     return newProjectsArray;
   };
 
   //Object to string.
-  let stringer = function (obj) {
+  let stringer = function (projects) {
     let str = [];
-
-    let projects = obj.getProjectsArray();
 
     for (let proj of projects) {
       let s = [];
@@ -77,8 +75,16 @@ export function Storage() {
     return str;
   };
 
-  const jsonTest = stringer(testCase);
+  let setStorage = function (projectArray) {
+    //Turn the project array into JSON format w/ the stringify method
+    const projectArrayJSON = stringer(projectArray);
+
+    console.log(projectArrayJSON);
+    localStorage.setItem("projectsArray", projectArrayJSON);
+  };
+
+  const jsonTest = stringer(testCase.getProjectsArray());
   const newProjectsArray = parser(jsonTest);
 
-  return {};
+  return { parser, stringer, setStorage };
 }

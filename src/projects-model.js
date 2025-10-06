@@ -1,3 +1,4 @@
+import { setStorage } from "./storage";
 export function Projects() {
   let projectsArray = [];
 
@@ -59,6 +60,7 @@ export function Projects() {
     countAllTodays,
     countAllOverdues,
     deleteProject,
+    setProjectsArray,
   };
 }
 

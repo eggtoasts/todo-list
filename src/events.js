@@ -2,6 +2,9 @@ import { Todos } from "./todos.js";
 import { Proj, Projects } from "./projects-model.js";
 import { projectUIHandler, dialogUIHandler } from "./ui-handlers.js";
 import { Project } from "./project.js";
+import { Storage } from "./storage";
+
+const { parser, stringer, setStorage } = Storage();
 
 export const eventHandling = (function () {
   const {
@@ -116,6 +119,8 @@ export const eventHandling = (function () {
 
     //Create task item and add it to the inputted project array.
     projectTo.addTodo(newTask);
+
+    setStorage(Proj.getProjectsArray());
 
     renderPage(projectTo);
 
