@@ -7,7 +7,7 @@ import { Storage } from "./storage";
 
 export const initializeDefault = function () {
   //Uncomment for checks
-  localStorage.clear();
+  // localStorage.clear();
 
   const checkLocalStorage = localStorage.getItem("projectsArray");
 
